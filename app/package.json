@@ -1,0 +1,20 @@
+{
+  "name": "stafleu_ums_node",
+  "description": "",
+  "version": "0.0.1",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "TODO"
+  },
+  "keywords": [],
+  "author": "Jasper Stafleu",
+  "license": "ISC",
+  "bugs": {
+    "url": "TODO ;)"
+  },
+  "homepage": "TODO"
+}

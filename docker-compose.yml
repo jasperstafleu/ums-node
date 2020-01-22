@@ -1,0 +1,15 @@
+version: "2"
+services:
+  node:
+    image: "node:8"
+    user: "node"
+    working_dir: /home/node/app
+    environment:
+      - UMS_SERVER_PORT=3010  # Keep equal to second part of ports variable in this file
+    env_file:
+      - ./docker.env
+    volumes:
+      - ./app:/home/node/app
+    ports:
+      - "9000:3010"
+    command: "npm start"
