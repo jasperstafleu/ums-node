@@ -1,8 +1,10 @@
 'use strict';
 
+import {RequestEvent} from "../Event/RequestEvent";
+
 module.exports = class RequestListener
 {
-    handle(event)
+    handle(event: RequestEvent): void
     {
         const response = event.response;
 

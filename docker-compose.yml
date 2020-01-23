@@ -2,7 +2,6 @@ version: "2"
 services:
   node:
     image: "node:13"
-    user: "node"
     working_dir: /home/node/app
     environment:
       - UMS_SERVER_PORT=3010  # Keep equal to second part of ports variable in this file
