@@ -14,6 +14,9 @@ module.exports = class ControllerResolver
 
     handle(event: ControllerEvent): void
     {
-        event.controller = this.container.get('controller.main')['index'];
+        event.controller = (...args) => {
+            let controller = this.container.get('controller.main');
+            return controller['index'].apply(controller, args);
+        }
     }
 };

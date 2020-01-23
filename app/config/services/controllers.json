@@ -1,0 +1,8 @@
+{
+  "controller.main": {
+    "class": "Controller/Main",
+    "arguments": [
+      "Jasper"
+    ]
+  }
+}

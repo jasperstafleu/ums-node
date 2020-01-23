@@ -2,47 +2,47 @@
 
 export class Logger
 {
-    emergency(message: string, context: object): void
+    emergency(message: string, context: object = {}): void
     {
         this.log('emergency', message, context);
     }
 
-    alert(message: string, context: object): void
+    alert(message: string, context: object = {}): void
     {
         this.log('alert', message, context);
     }
 
-    critical(message: string, context: object): void
+    critical(message: string, context: object = {}): void
     {
         this.log('critical', message, context);
     }
 
-    error(message: string, context: object): void
+    error(message: string, context: object = {}): void
     {
         this.log('error', message, context);
     }
 
-    warning(message: string, context: object): void
+    warning(message: string, context: object = {}): void
     {
         this.log('warning', message, context);
     }
 
-    notice(message: string, context: object): void
+    notice(message: string, context: object = {}): void
     {
         this.log('notice', message, context);
     }
 
-    info(message: string, context: object): void
+    info(message: string, context: object = {}): void
     {
         this.log('info', message, context);
     }
 
-    debug(message: string, context: object): void
+    debug(message: string, context: object = {}): void
     {
         this.log('debug', message, context);
     }
 
-    log(level: string, message: string, context: object): void
+    log(level: string, message: string, context: object = {}): void
     {
         console.log('['+(new Date()).toISOString()+']', level.toUpperCase(), message, context);
     }

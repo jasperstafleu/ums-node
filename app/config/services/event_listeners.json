@@ -1,0 +1,34 @@
+{
+  "event.emitter": {
+    "class": "Event/Emitter/Emitter"
+  },
+  "event.controller_resolver": {
+    "class": "Event/Listener/Controller/ControllerResolver",
+    "arguments": [
+      "@container"
+    ],
+    "tags": [
+      {
+        "name": "kernel.event_listener",
+        "event": "kernel.controller",
+        "method": "handle"
+      }
+    ]
+  },
+  "event.request_logger": {
+    "class": "Event/Listener/Request/RequestLogger",
+    "arguments": [
+      "@logger"
+    ],
+    "tags": [
+      {
+        "name": "kernel.event_listener",
+        "event": "kernel.request",
+        "method": "handle"
+      }
+    ]
+  },
+  "event.listener_tag_resolver": {
+    "class": "Dependency/EventListenerTagResolver"
+  }
+}
