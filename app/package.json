@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "if [ $NODE_ENV=development ]; then tsc-watch --onSuccess 'node ./server.js'; else tsc && node ./server.js; fi"
+    "start": "if [ $NODE_ENV=development ]; then tsc-watch --onSuccess 'node ../dist/server.js'; else tsc && node ../dist/server.js; fi",
   },
   "repository": {
     "type": "git",

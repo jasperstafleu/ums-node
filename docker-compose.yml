@@ -9,6 +9,7 @@ services:
       - ./docker.env
     volumes:
       - ./app:/home/node/app
+      - ./dist:/home/node/dist
     ports:
       - "9000:3010"
     command: "npm run start"
