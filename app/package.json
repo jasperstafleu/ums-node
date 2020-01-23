@@ -2,10 +2,9 @@
   "name": "stafleu_ums_node",
   "description": "",
   "version": "0.0.1",
-  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "tsc": "tsc"
+    "start": "if [ $NODE_ENV=development ]; then tsc-watch --onSuccess 'node ./server.js'; else tsc && node ./server.js; fi"
   },
   "repository": {
     "type": "git",
@@ -21,5 +20,8 @@
   "dependencies": {
     "@types/node": "^13.1.8",
     "typescript": "^3.7.5"
+  },
+  "devDependencies": {
+    "tsc-watch": "^4.1.0"
   }
 }

@@ -10,6 +10,6 @@ module.exports = class RequestListener
 
         response.statusCode = 200;
         response.setHeader('Content-Type', 'text/plain');
-        response.end('Hello from event ' + (process.env.GREETING || 'world'));
+        response.end('Hello world');
     }
 };

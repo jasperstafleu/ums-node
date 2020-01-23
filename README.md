@@ -1,8 +1,8 @@
-Compile typescript:
-`docker-compose run node npm run tsc`
+- In production mode, typescript is automatically compiled before the server is started
+- In development mode, typescript changes is watched and, on succesful compilation, the server is restarted.
 
-Install node_module:
+Install new node_module:
 `docker-compose run node npm install --save typescript`
 
-Restart all:
-`docker-compose stop && docker-compose up -d && docker-compose run node npm run tsc`
+Restart container:
+`docker-compose stop && docker-compose up -d`
