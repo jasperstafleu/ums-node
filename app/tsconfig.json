@@ -3,7 +3,9 @@
     "target": "es2019",
     "module": "commonjs",
     "outDir": "../dist",
-    "sourceMap": false
+    "sourceMap": false,
+    "alwaysStrict": true,
+    "incremental": true
   },
   "include": [
     "**/*.ts"
