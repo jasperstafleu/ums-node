@@ -1,8 +1,17 @@
 {
   "controller.main": {
     "class": "Controller/Main",
-    "arguments": [
-      "Jasper"
+    "tags": [
+      {
+        "name": "controller",
+        "action": "index",
+        "route": "^/$"
+      },
+      {
+        "name": "controller",
+        "action": "index",
+        "route": "^/test/(?<string0>.*)$"
+      }
     ]
   }
 }

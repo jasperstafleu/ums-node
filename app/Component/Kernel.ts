@@ -44,11 +44,12 @@ module.exports = class Kernel
 
         let controllerEvent = new ControllerEvent(request);
         this.emitter.emit('kernel.controller', controllerEvent);
+
         if (!controllerEvent.hasController) {
             throw new Error('Unable to find controller for path');
         }
 
-        return controllerEvent.controller(request);
+        return controllerEvent.controller.call(controllerEvent.controller);
     }
 
     private filterResponse(request: IncomingMessage, response: HttpResponse): HttpResponse

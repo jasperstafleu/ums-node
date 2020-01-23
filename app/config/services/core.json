@@ -7,5 +7,17 @@
     "arguments": [
       "@event.emitter"
     ]
+  },
+  "controller.tag_resolver": {
+    "class": "Dependency/ControllerTagResolver"
+  },
+  "param_converter.tag_resolver": {
+    "class": "Dependency/ParamConverterTagResolver"
+  },
+  "param_converter.string": {
+    "class": "Controller/ParamCoverter/StringConverter",
+    "tags": [
+      { "name": "param_converter" }
+    ]
   }
 }

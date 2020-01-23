@@ -5,15 +5,10 @@ import {HttpResponse} from "../Component/HttpResponse";
 
 module.exports = class Main
 {
-    private who: string;
-
-    constructor(who: string)
+    index(name?: string): HttpResponse
     {
-        this.who = who;
-    }
-
-    index(request: IncomingMessage): HttpResponse
-    {
-        return new HttpResponse('Hello ' + this.who);
+        name = name || 'you';
+        return new HttpResponse(`Hello ${name}`);
+        // return new HttpResponse(`Hello ${name}, at ${request.url}`);
     }
 };

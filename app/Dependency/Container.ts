@@ -107,14 +107,11 @@ export class Container
 
 let container = new Container();
 module.exports = container
-    .addService('container', () => {
-        // TODO: If possible, remove
-        console.log('Injecting the container in any class is frowned upon');
-        return container;
-    })
     .loadConfigFromFile('config/services/core.json')
     .loadConfigFromFile('config/services/event_listeners.json')
     .loadConfigFromFile('config/services/controllers.json')
     .addTagResolver('kernel.event_listener', container.get('event.listener_tag_resolver'))
+    .addTagResolver('controller', container.get('controller.tag_resolver'))
+    .addTagResolver('param_converter', container.get('param_converter.tag_resolver'))
     .close()
 ;

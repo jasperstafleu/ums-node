@@ -6,7 +6,3 @@ Install new node_module:
 
 Restart container:
 `docker-compose stop && docker-compose up -d`
-
-TODO: 
-- Router
-- Controller resolver

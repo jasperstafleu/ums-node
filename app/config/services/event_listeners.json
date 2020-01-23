@@ -4,9 +4,6 @@
   },
   "event.controller_resolver": {
     "class": "Event/Listener/Controller/ControllerResolver",
-    "arguments": [
-      "@container"
-    ],
     "tags": [
       {
         "name": "kernel.event_listener",
