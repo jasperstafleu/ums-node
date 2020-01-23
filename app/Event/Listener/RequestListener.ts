@@ -1,15 +1,12 @@
 'use strict';
 
 import {RequestEvent} from "../Event/RequestEvent";
+import {HttpResponse} from "../../Component/HttpResponse";
 
 module.exports = class RequestListener
 {
     handle(event: RequestEvent): void
     {
-        const response = event.response;
-
-        response.statusCode = 200;
-        response.setHeader('Content-Type', 'text/plain');
-        response.end('Hello world');
+        event.response = new HttpResponse('Hello world');
     }
 };

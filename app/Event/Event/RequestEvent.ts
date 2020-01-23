@@ -1,15 +1,11 @@
 'use strict';
 
-import {IncomingMessage, ServerResponse} from "http";
+import {KernelEvent} from "./KernelEvent";
+import {HttpResponse} from "../../Component/HttpResponse";
 
-export class RequestEvent
+export class RequestEvent extends KernelEvent
 {
-    readonly request: IncomingMessage;
-    readonly response: ServerResponse;
+    response: HttpResponse;
 
-    constructor(request: IncomingMessage, response: ServerResponse)
-    {
-        this.request = request;
-        this.response = response;
-    }
+    get hasResponse() { return this.response !== undefined; }
 }
