@@ -1,12 +1,14 @@
 'use strict';
 
 import {RequestEvent} from "../Event/Event/RequestEvent";
+import {ControllerEvent} from "../Event/Event/ControllerEvent";
 
-class Container
+export class Container
 {
     private services = {};
 
-    get (serviceName: string): any {
+    get (serviceName: string): any
+    {
         if (!this.services[serviceName]) {
             throw `Unknown service '${serviceName}' requested`;
         }
@@ -32,10 +34,7 @@ module.exports = container // ; omitted by design
 /// Kernel
 .addService('kernel', () => {
     const Kernel = require('../Component/Kernel');
-    return new Kernel(
-        container.get('event_emitter'),
-        container.get('controller_resolver')
-    );
+    return new Kernel(container.get('event_emitter'));
 })
 
 
@@ -45,20 +44,15 @@ module.exports = container // ; omitted by design
     let emitter = new EventEmitter;
 
     emitter.on('kernel.request', (event: RequestEvent) => container.get('request_logger').handle(event));
-    emitter.on('kernel.request', (event: RequestEvent) => container.get('request_listener').handle(event));
+    emitter.on('kernel.controller', (event: ControllerEvent) => container.get('controller_resolver').handle(event));
 
     return emitter;
 })
 
 /// Controller resolver
 .addService('controller_resolver', () => {
-    return {};
-})
-
-/// Request Listener
-.addService('request_listener', () => {
-    const RequestListener = require('../Event/Listener/RequestListener');
-    return new RequestListener;
+    const ControllerResolver = require('../Event/Listener/Controller/ControllerResolver');
+    return new ControllerResolver(container);
 })
 
 /// Request Logger
@@ -71,6 +65,12 @@ module.exports = container // ; omitted by design
 .addService('logger', () => {
     const Logger = require('../Logger/Logger');
     return new Logger;
+})
+
+/// Controllers
+.addService('controller.main', () => {
+    const MainController = require('../Controller/Main');
+    return new MainController;
 })
 
 ;
