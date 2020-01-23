@@ -6,7 +6,7 @@ import {IncomingMessage} from "http";
 
 export class ResponseEvent extends KernelEvent
 {
-    response: HttpResponse; // TODO: Any, but ensure the end result is HttpResponse
+    response: HttpResponse;
 
     constructor(request: IncomingMessage, response: HttpResponse)
     {
