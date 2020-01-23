@@ -1,6 +1,6 @@
 version: "2"
 services:
-  node:
+  ums_node:
     image: "node:13"
     working_dir: /home/node/app
     environment:

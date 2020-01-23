@@ -1,5 +1,7 @@
 'use strict';
 
+import {RequestEvent} from "../Event/Event/RequestEvent";
+
 class Container
 {
     private services = {};
@@ -42,7 +44,8 @@ module.exports = container // ; omitted by design
     const EventEmitter = require('events');
     let emitter = new EventEmitter;
 
-    emitter.on('kernel.request', container.get('request_listener').handle);
+    emitter.on('kernel.request', (event: RequestEvent) => container.get('request_logger').handle(event));
+    emitter.on('kernel.request', (event: RequestEvent) => container.get('request_listener').handle(event));
 
     return emitter;
 })
@@ -56,6 +59,18 @@ module.exports = container // ; omitted by design
 .addService('request_listener', () => {
     const RequestListener = require('../Event/Listener/RequestListener');
     return new RequestListener;
+})
+
+/// Request Logger
+.addService('request_logger', () => {
+    const RequestLogger = require('../Event/Listener/Request/RequestLogger');
+    return new RequestLogger(container.get('logger'));
+})
+
+/// Logger
+.addService('logger', () => {
+    const Logger = require('../Logger/Logger');
+    return new Logger;
 })
 
 ;

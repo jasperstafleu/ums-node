@@ -7,5 +7,5 @@ const server = http.createServer(
 );
 
 server.listen(parseInt(process.env.UMS_SERVER_PORT), process.env.UMS_HOSTNAME, () => {
-  console.log(`Server running at http://${process.env.UMS_HOSTNAME}:${process.env.UMS_SERVER_PORT}/ in ${process.env.NODE_ENV} mode`);
+  console.log(`Server running in ${process.env.NODE_ENV} mode`);
 });
