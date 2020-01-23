@@ -2,10 +2,10 @@
 
 import {EventEmitter} from 'events';
 import {IncomingMessage, ServerResponse} from 'http';
-import {RequestEvent} from "./Event/Event/RequestEvent";
-import {ResponseEvent} from "./Event/Event/ResponseEvent";
-import {HttpResponse} from "./Component/HttpResponse";
-import {FinishRequestEvent} from "./Event/Event/FinishRequestEvent";
+import {RequestEvent} from "../Event/Event/RequestEvent";
+import {ResponseEvent} from "../Event/Event/ResponseEvent";
+import {HttpResponse} from "./HttpResponse";
+import {FinishRequestEvent} from "../Event/Event/FinishRequestEvent";
 
 module.exports = class Kernel
 {

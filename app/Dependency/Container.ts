@@ -31,7 +31,7 @@ module.exports = container // ; omitted by design
 
 /// Kernel
 .addService('kernel', () => {
-    const Kernel = require('../Kernel');
+    const Kernel = require('../Component/Kernel');
     return new Kernel(
         container.get('event_emitter'),
         container.get('controller_resolver')
