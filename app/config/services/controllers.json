@@ -10,7 +10,7 @@
       {
         "name": "controller",
         "action": "index",
-        "route": "^/test/(?<string0>.*)$"
+        "route": "^/test/(?<string0>[^/]+)$"
       }
     ]
   }

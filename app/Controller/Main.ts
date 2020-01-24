@@ -5,9 +5,8 @@ import {HttpResponse} from "../Component/HttpResponse";
 
 module.exports = class Main
 {
-    index(name?: string): HttpResponse
+    index(name: string = 'world'): HttpResponse
     {
-        name = name || 'you';
         return new HttpResponse(`Hello ${name}`);
         // return new HttpResponse(`Hello ${name}, at ${request.url}`);
     }

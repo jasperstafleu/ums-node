@@ -34,10 +34,10 @@ module.exports = class ControllerResolver
 
     addController(route: RegExp, controller: Controller, action: string): Function
     {
-        let stack = this.controllerStack;
+        const stack = this.controllerStack;
 
         return this.controllerStack = (request: IncomingMessage) => {
-            let match = route.exec(request.url);
+            const match = route.exec(request.url);
 
             if (!match) {
                 // No match? Next candidate

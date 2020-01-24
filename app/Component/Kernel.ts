@@ -49,7 +49,7 @@ module.exports = class Kernel
             throw new Error('Unable to find controller for path');
         }
 
-        return controllerEvent.controller.call(controllerEvent.controller);
+        return this.filterResponse(request, controllerEvent.controller());
     }
 
     private filterResponse(request: IncomingMessage, response: HttpResponse): HttpResponse

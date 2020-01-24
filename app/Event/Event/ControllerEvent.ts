@@ -4,7 +4,7 @@ import {KernelEvent} from "./KernelEvent";
 
 export class ControllerEvent extends KernelEvent
 {
-    controller: any;
+    controller: Function;
 
     get hasController(): boolean { return this.controller !== undefined; }
 }
