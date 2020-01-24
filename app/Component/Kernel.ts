@@ -38,14 +38,14 @@ module.exports = class Kernel
         let requestEvent = new RequestEvent(request);
         this.emitter.emit('kernel.request', requestEvent);
 
-        if (requestEvent.hasResponse) {
+        if (requestEvent.response) {
             return this.filterResponse(request, requestEvent.response);
         }
 
         let controllerEvent = new ControllerEvent(request);
         this.emitter.emit('kernel.controller', controllerEvent);
 
-        if (!controllerEvent.hasController) {
+        if (!controllerEvent.controller) {
             throw new Error('Unable to find controller for path');
         }
 

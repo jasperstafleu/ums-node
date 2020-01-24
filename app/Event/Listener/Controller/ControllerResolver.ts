@@ -7,49 +7,62 @@ import {ParamConverter} from "../../../Component/ParamConverter";
 
 module.exports = class ControllerResolver
 {
-    protected controllerStack: Function = (request: IncomingMessage) => undefined;
     protected converters: ParamConverter[] = [];
+    protected controllers: {route: RegExp, controller: Controller, action: string}[] = [];
 
     handle(event: ControllerEvent): void
     {
-        const result = this.controllerStack(event.request);
-        if (result === undefined) {
-            return;
+        const result = this.getController(event.request);
+
+        if (result !== undefined) {
+            event.controller = () => result.action.apply(result.action, this.getParameters(result.routeArgs));
         }
-
-        const [controller, action, routeArgs] = result;
-
-        event.controller = (...args) => {
-            for (let name of Object.keys(routeArgs || {})) {
-                for (let it = this.converters.length - 1; it >= 0; --it) {
-                    if (this.converters[it].supports(name)) {
-                        const inject = this.converters[it].convert(name, routeArgs[name]);
-                        args.splice(inject.position, 1, inject.value);
-                    }
-                }
-            }
-            return controller[action].call(controller, ...args)
-        };
     }
 
-    addController(route: RegExp, controller: Controller, action: string): Function
+    addController(route: RegExp, controller: Controller, action: string): void
     {
-        const stack = this.controllerStack;
+        this.controllers.push({
+            "route": route,
+            "controller": controller,
+            "action": action
+        });
+    }
 
-        return this.controllerStack = (request: IncomingMessage) => {
-            const match = route.exec(request.url);
-
-            if (!match) {
-                // No match? Next candidate
-                return stack(request);
+    protected getController(request: IncomingMessage): undefined | {action: Function, routeArgs: {[key: string]: string}}
+    {
+        let match, routeDefinition;
+        for (let it = this.controllers.length - 1; it >= 0; --it) {
+            routeDefinition = this.controllers[it];
+            match = request.url !== undefined && routeDefinition.route.exec(request.url);
+            if (match) {
+                return {
+                    "action": (routeDefinition.controller as any)[routeDefinition.action],
+                    "routeArgs": match === true ? {} : (match.groups || {})
+                };
             }
+        }
 
-            return [controller, action, match.groups];
-        };
+        return undefined;
     }
 
     addParamConverter(paramConverter: ParamConverter): void
     {
         this.converters.push(paramConverter);
+    }
+
+    protected getParameters(routeArgs: {[key: string]: any}): any[]
+    {
+        let inject, args: any[] = [];
+
+        for (let name of Object.keys(routeArgs || {})) {
+            for (let it = this.converters.length - 1; it >= 0; --it) {
+                if (this.converters[it].supports(name)) {
+                    inject = this.converters[it].convert(name, routeArgs[name]);
+                    args.splice(inject.position, 1, inject.value);
+                }
+            }
+        }
+
+        return args;
     }
 };

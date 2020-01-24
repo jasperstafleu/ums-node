@@ -5,7 +5,11 @@
     "outDir": "../dist",
     "sourceMap": false,
     "alwaysStrict": true,
-    "incremental": true
+    "incremental": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "strict": true
   },
   "include": [
     "**/*.ts"

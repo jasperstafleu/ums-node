@@ -7,7 +7,7 @@ export class Container
     protected services: {[key:string]: any} = {};
     protected fs = require('fs');
     protected tagResolvers: {[key:string]: TagResolver} = {};
-    private tagsToBeResolved = [];
+    private tagsToBeResolved: Function[]= [];
     private closed: boolean = false;
 
     get (serviceName: string): any
@@ -92,7 +92,7 @@ export class Container
     close(): Container
     {
         if (this.closed) {
-            return;
+            return this;
         }
 
         for (let it = this.tagsToBeResolved.length - 1; it >= 0; --it) {

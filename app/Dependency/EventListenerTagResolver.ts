@@ -15,7 +15,7 @@ module.exports = class EventListenerTagResolver implements TagResolver
         container.addService('event.emitter', () => {
             let emitter = emitterDefinition.call();
 
-            emitter.on(tag.event, (...args) => {
+            emitter.on(tag.event, (...args: any[]) => {
                 let service = container.get(serviceName);
                 service[tag.method].apply(service, args);
             });

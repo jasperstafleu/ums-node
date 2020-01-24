@@ -2,7 +2,6 @@
 
 import {TagResolver} from "./TagResolver";
 import {Container} from "./Container";
-import {Controller} from "../Controller/Controller";
 
 module.exports = class ControllerTagResolver implements TagResolver
 {
