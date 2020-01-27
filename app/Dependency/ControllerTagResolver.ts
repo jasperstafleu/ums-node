@@ -1,5 +1,3 @@
-'use strict';
-
 import {TagResolver} from "./TagResolver";
 import {Container} from "./Container";
 import {ControllerResolver} from "../Event/Listener/Controller/ControllerResolver";
@@ -15,7 +13,12 @@ module.exports = class ControllerTagResolver implements TagResolver
         }
 
         container.decorate('event.controller_resolver', (resolver: ControllerResolver) => {
-            resolver.addController(new RegExp(tag.route), container.get(serviceName), tag.action);
+            resolver.addController(
+                new RegExp(tag.route),
+                container.get(serviceName),
+                tag.action,
+                tag.defaults || {}
+            );
         });
     }
 };

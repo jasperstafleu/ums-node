@@ -19,5 +19,16 @@
     "tags": [
       { "name": "param_converter" }
     ]
+  },
+  "param_converter.request": {
+    "class": "Controller/ParamCoverter/RequestConverter",
+    "tags": [
+      { "name": "param_converter" },
+      {
+        "name": "kernel.event_listener",
+        "event": "kernel.request",
+        "method": "handleRequestEvent"
+      }
+    ]
   }
 }

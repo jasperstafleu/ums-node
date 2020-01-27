@@ -1,13 +1,10 @@
-'use strict';
-
-// import {IncomingMessage} from "http";
 import {HttpResponse} from "../Component/HttpResponse";
+import {IncomingMessage} from "http";
 
 module.exports = class Main
 {
-    index(name: string = 'world'): HttpResponse
+    index(name: string, request: IncomingMessage): HttpResponse
     {
-        return new HttpResponse(`Hello ${name}`);
-        // return new HttpResponse(`Hello ${name}, at ${request.url}`);
+        return new HttpResponse(`Hello ${name} at ${request.url}`);
     }
 };

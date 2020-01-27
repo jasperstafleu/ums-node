@@ -5,12 +5,19 @@
       {
         "name": "controller",
         "action": "index",
-        "route": "^/$"
+        "route": "^/$",
+        "defaults": {
+          "string0": "world",
+          "request1": ""
+        }
       },
       {
         "name": "controller",
         "action": "index",
-        "route": "^/test/(?<string0>[^/]+)$"
+        "route": "^/test/(?<string0>[^/]+)$",
+        "defaults": {
+          "request1": ""
+        }
       }
     ]
   }
