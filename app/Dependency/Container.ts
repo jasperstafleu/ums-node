@@ -4,11 +4,17 @@ import {TagResolver} from "./TagResolver";
 
 export class Container
 {
+    protected pathToRoot: string = '';
     protected services: {[key:string]: any} = {};
     protected fs = require('fs');
     protected tagResolvers: {[key:string]: TagResolver} = {};
     private tagsToBeResolved: Function[]= [];
     private closed: boolean = false;
+
+    constructor (pathToRoot: string)
+    {
+        this.pathToRoot = pathToRoot;
+    }
 
     get (serviceName: string): any
     {
@@ -17,19 +23,25 @@ export class Container
         }
 
         if (typeof this.services[serviceName] == 'function') {
+            // Overwrite original service definition to ensure service is a "singleton".
             this.services[serviceName] = this.services[serviceName]();
         }
 
         return this.services[serviceName];
     }
 
-    getDefinition (serviceName: string): any
+    decorate (serviceName: string, decorator: (service: any) => void): void
     {
-        if (this.closed) {
-            throw new Error('Can not get definition from closed container');
-        }
+        const serviceDefinition = this.services[serviceName];
 
-        return this.services[serviceName];
+        // Defer actual decoration until the get method is called.
+        this.services[serviceName] = (): any => {
+            const service = serviceDefinition.call(serviceName);
+
+            decorator(service);
+
+            return service;
+        };
     }
 
     addService(serviceName: string, callback: () => any): Container
@@ -52,11 +64,13 @@ export class Container
 
         for (let serviceName of Object.keys(config)) {
             if (!config[serviceName].class) {
+                console.log(`Service '${serviceName}' has no 'class' configuration and is therefore ignored`);
+
                 continue;
             }
 
             this.addService(serviceName, () => {
-                const cls = require('../'+config[serviceName].class);
+                const cls = require(this.pathToRoot + config[serviceName].class);
                 const args = config[serviceName].arguments || [];
 
                 for (let it = args.length; it >= 0; --it) {
@@ -81,6 +95,8 @@ export class Container
         for (let it = tags.length - 1; it >= 0; --it) {
             let tag = tags[it];
             if (!('name' in tag && this.tagResolvers[tag.name])) {
+                console.log(`A tag on service '${serviceName}' lacks a name, and can therefore not be resolved`);
+
                 // No support for tag; ignore
                 continue;
             }
@@ -92,20 +108,21 @@ export class Container
     close(): Container
     {
         if (this.closed) {
-            return this;
-        }
-
-        for (let it = this.tagsToBeResolved.length - 1; it >= 0; --it) {
-            this.tagsToBeResolved[it]();
+            throw new Error('Container is already closed, and can\'t be closed again.');
         }
 
         this.closed = true;
+
+        // Only resolve the tag resolvers once all services have been defined. Makes life a lot easier.
+        for (let it = this.tagsToBeResolved.length - 1; it >= 0; --it) {
+            this.tagsToBeResolved[it]();
+        }
 
         return this;
     }
 }
 
-let container = new Container();
+let container = new Container('../');
 module.exports = container
     .loadConfigFromFile('config/services/core.json')
     .loadConfigFromFile('config/services/event_listeners.json')

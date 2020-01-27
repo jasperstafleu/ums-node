@@ -5,7 +5,7 @@ import {Controller} from "../../../Controller/Controller";
 import {IncomingMessage} from "http";
 import {ParamConverter} from "../../../Component/ParamConverter";
 
-module.exports = class ControllerResolver
+export class ControllerResolver
 {
     protected converters: ParamConverter[] = [];
     protected controllers: {route: RegExp, controller: Controller, action: string}[] = [];
@@ -65,4 +65,6 @@ module.exports = class ControllerResolver
 
         return args;
     }
-};
+}
+
+module.exports = ControllerResolver;

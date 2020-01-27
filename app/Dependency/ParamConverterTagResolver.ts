@@ -2,18 +2,14 @@
 
 import {TagResolver} from "./TagResolver";
 import {Container} from "./Container";
+import {ControllerResolver} from "../Event/Listener/Controller/ControllerResolver";
 
 module.exports = class ParamConverterTagResolver implements TagResolver
 {
     resolve(container: Container, serviceName: string, tag: any): void
     {
-        const resolverDefinition = container.getDefinition('event.controller_resolver');
-        container.addService('event.controller_resolver', () => {
-            let resolver = resolverDefinition.call();
-
+        container.decorate('event.controller_resolver', (resolver: ControllerResolver) => {
             resolver.addParamConverter(container.get(serviceName));
-
-            return resolver;
         });
     }
 };
