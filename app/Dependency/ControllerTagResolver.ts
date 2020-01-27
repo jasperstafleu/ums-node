@@ -12,9 +12,9 @@ module.exports = class ControllerTagResolver implements TagResolver
             return;
         }
 
-        container.decorate('event.controller_resolver', (resolver: ControllerResolver) => {
+        container.decorate('event.controller_resolver', (resolver: ControllerResolver): void => {
             resolver.addController(
-                new RegExp(tag.route),
+                tag.route,
                 container.get(serviceName),
                 tag.action,
                 tag.defaults || {}

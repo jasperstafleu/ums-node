@@ -8,7 +8,7 @@ import {ControllerEvent} from "../Event/Event/ControllerEvent";
 
 module.exports = class Kernel
 {
-    private emitter: EventEmitter;
+    protected emitter: EventEmitter;
 
     constructor(emitter: EventEmitter)
     {
@@ -18,6 +18,7 @@ module.exports = class Kernel
     handle(request: IncomingMessage, response: ServerResponse): void
     {
         let httpResponse;
+
         try {
             httpResponse = this.handleRaw(request);
         } catch (e) {
@@ -31,16 +32,16 @@ module.exports = class Kernel
         response.end(httpResponse.content);
     }
 
-    private handleRaw(request: IncomingMessage): HttpResponse
+    protected handleRaw(request: IncomingMessage): HttpResponse
     {
-        let requestEvent = new RequestEvent(request);
+        const requestEvent = new RequestEvent(request);
         this.emitter.emit('kernel.request', requestEvent);
 
         if (requestEvent.response) {
             return this.filterResponse(request, requestEvent.response);
         }
 
-        let controllerEvent = new ControllerEvent(request);
+        const controllerEvent = new ControllerEvent(request);
         this.emitter.emit('kernel.controller', controllerEvent);
 
         if (!controllerEvent.controller) {
@@ -50,7 +51,7 @@ module.exports = class Kernel
         return this.filterResponse(request, controllerEvent.controller());
     }
 
-    private filterResponse(request: IncomingMessage, response: HttpResponse): HttpResponse
+    protected filterResponse(request: IncomingMessage, response: HttpResponse): HttpResponse
     {
         let event = new ResponseEvent(request, response);
 
@@ -60,12 +61,12 @@ module.exports = class Kernel
         return event.response;
     }
 
-    private finishRequest(request: IncomingMessage): void
+    protected finishRequest(request: IncomingMessage): void
     {
         this.emitter.emit('kernel.finish_request', new FinishRequestEvent(request));
     }
 
-    private handleThrowable(e: Error, request: IncomingMessage): HttpResponse
+    protected handleThrowable(e: Error, request: IncomingMessage): HttpResponse
     {
         // TODO: Event driven exception handling
         return new HttpResponse(`${e.stack}`, 500, {'Content-type':'text/plain'});

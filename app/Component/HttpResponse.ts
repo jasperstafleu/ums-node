@@ -2,12 +2,12 @@ export class HttpResponse
 {
     content: string = '';
     httpCode: number = 200;
-    headers: {[key: string]: string;} = {};
+    headers: {[key: string]: string} = {};
 
     constructor(
         content: string = '',
         httpCode: number = 200,
-        headers: {[key: string]: string;} = {'Content-type': 'text/html'}
+        headers: {[key: string]: string} = {'Content-type': 'text/html'}
     ) {
         this.content = content;
         this.httpCode = httpCode;

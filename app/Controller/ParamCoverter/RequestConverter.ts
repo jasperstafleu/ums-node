@@ -16,7 +16,7 @@ module.exports = class RequestConverter implements ParamConverter
         return name.substr(0, 7) === 'request';
     }
 
-    convert(name: string, value: string): { position: number; value: any }
+    convert(name: string, value: string): { position: number; value: IncomingMessage }
     {
         if (!this.request) {
             throw new Error('Request is not available');

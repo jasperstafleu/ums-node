@@ -6,7 +6,7 @@ module.exports = class ParamConverterTagResolver implements TagResolver
 {
     resolve(container: Container, serviceName: string, tag: any): void
     {
-        container.decorate('event.controller_resolver', (resolver: ControllerResolver) => {
+        container.decorate('event.controller_resolver', (resolver: ControllerResolver): void => {
             resolver.addParamConverter(container.get(serviceName));
         });
     }

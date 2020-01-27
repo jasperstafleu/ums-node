@@ -7,7 +7,7 @@ module.exports = class StringConverter implements ParamConverter
         return name.substr(0, 6) === 'string';
     }
 
-    convert(name: string, value: string): { position: number; value: any }
+    convert(name: string, value: string): { position: number; value: string }
     {
         return {
             position: parseInt(name.substr(6)),

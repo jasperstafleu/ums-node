@@ -6,18 +6,18 @@ import {ParamConverter} from "../../../Component/ParamConverter";
 export class ControllerResolver
 {
     protected converters: ParamConverter[] = [];
-    protected controllers: {route: RegExp, controller: Controller, action: string, defaults: {[key: string]: string}}[] = [];
+    protected controllers: {route: string, controller: Controller, action: string, defaults: {[key: string]: string}}[] = [];
 
     handle(event: ControllerEvent): void
     {
         const result = this.getController(event.request);
 
         if (result !== undefined) {
-            event.controller = () => result.action.apply(result.action, this.getParameters(result.routeArgs));
+            event.controller = (): any => result.action.apply(result.action, this.getParameters(result.routeArgs));
         }
     }
 
-    addController(route: RegExp, controller: Controller, action: string, defaults: {[key: string]: string} = {}): void
+    addController(route: string, controller: Controller, action: string, defaults: {[key: string]: string} = {}): void
     {
         this.controllers.push({
             "route": route,
@@ -30,9 +30,10 @@ export class ControllerResolver
     protected getController(request: IncomingMessage): undefined | {action: Function, routeArgs: {[key: string]: string}}
     {
         let match, routeDefinition;
+
         for (let it = this.controllers.length - 1; it >= 0; --it) {
             routeDefinition = this.controllers[it];
-            match = request.url !== undefined && routeDefinition.route.exec(request.url);
+            match = request.url !== undefined && (new RegExp(routeDefinition.route)).exec(request.url);
 
             if (match) {
                 return {

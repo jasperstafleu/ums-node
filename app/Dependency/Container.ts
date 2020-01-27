@@ -2,16 +2,17 @@ import {TagResolver} from "./TagResolver";
 
 export class Container
 {
+    protected fs: (filename: string) => string;
     protected pathToRoot: string = '';
     protected services: {[key:string]: any} = {};
-    protected fs = require('fs');
     protected tagResolvers: {[key:string]: TagResolver} = {};
     private tagsToBeResolved: Function[]= [];
     private closed: boolean = false;
 
-    constructor (pathToRoot: string)
+    constructor (pathToRoot: string, fs: (filename: string) => string)
     {
         this.pathToRoot = pathToRoot;
+        this.fs = fs;
     }
 
     get (serviceName: string): any
@@ -58,7 +59,7 @@ export class Container
 
     loadConfigFromFile(fileName: string): Container
     {
-        const config = JSON.parse(this.fs.readFileSync(fileName));
+        const config = JSON.parse(this.fs(fileName));
 
         for (let serviceName of Object.keys(config)) {
             if (!config[serviceName].class) {
@@ -71,7 +72,7 @@ export class Container
                 const cls = require(this.pathToRoot + config[serviceName].class);
                 const args = config[serviceName].arguments || [];
 
-                for (let it = args.length; it >= 0; --it) {
+                for (let it = args.length - 1; it >= 0; --it) {
                     if (typeof args[it] === 'string' && args[it].charAt(0) === '@') {
                         args[it] = container.get(args[it].substring(1));
                     }
@@ -120,7 +121,7 @@ export class Container
     }
 }
 
-let container = new Container('../');
+let container = new Container('../', require('fs').readFileSync);
 module.exports = container
     .loadConfigFromFile('config/services/core.json')
     .loadConfigFromFile('config/services/event_listeners.json')

@@ -12,7 +12,7 @@ module.exports = class EventListenerTagResolver implements TagResolver
             return;
         }
 
-        container.decorate('event.emitter', (service: EventEmitter) => {
+        container.decorate('event.emitter', (service: EventEmitter): void => {
             service.on(tag.event, (...args: any[]) => {
                 let service = container.get(serviceName);
                 service[tag.method].apply(service, args);
