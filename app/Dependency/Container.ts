@@ -63,9 +63,7 @@ export class Container
 
         for (let serviceName of Object.keys(config)) {
             if (!config[serviceName].class) {
-                console.log(`Service '${serviceName}' has no 'class' configuration and is therefore ignored`);
-
-                continue;
+                throw new Error(`Service '${serviceName}' has no 'class' configuration.`);
             }
 
             this.addService(serviceName, () => {
@@ -94,10 +92,7 @@ export class Container
         for (let it = tags.length - 1; it >= 0; --it) {
             let tag = tags[it];
             if (!('name' in tag && this.tagResolvers[tag.name])) {
-                console.log(`A tag on service '${serviceName}' lacks a name, and can therefore not be resolved`);
-
-                // No support for tag; ignore
-                continue;
+                throw new Error(`A tag on service '${serviceName}' lacks a name, and can therefore not be resolved`);
             }
 
             this.tagResolvers[tag.name].resolve(this, serviceName, tag);

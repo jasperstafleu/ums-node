@@ -26,6 +26,9 @@
     ]
   },
   "event.listener_tag_resolver": {
-    "class": "Dependency/EventListenerTagResolver"
+    "class": "Dependency/EventListenerTagResolver",
+    "arguments": [
+      "@logger"
+    ]
   }
 }

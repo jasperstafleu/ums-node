@@ -9,7 +9,10 @@
     ]
   },
   "controller.tag_resolver": {
-    "class": "Dependency/ControllerTagResolver"
+    "class": "Dependency/ControllerTagResolver",
+    "arguments": [
+      "@logger"
+    ]
   },
   "param_converter.tag_resolver": {
     "class": "Dependency/ParamConverterTagResolver"
