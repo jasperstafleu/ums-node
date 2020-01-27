@@ -62,12 +62,15 @@ export class Container
         const config = JSON.parse(this.fs(fileName));
 
         for (let serviceName of Object.keys(config)) {
-            if (!config[serviceName].class) {
-                throw new Error(`Service '${serviceName}' has no 'class' configuration.`);
+            if (!(config[serviceName].class || config[serviceName].module)) {
+                throw new Error(`Service '${serviceName}' has no 'class' of 'module' configuration.`);
             }
 
             this.addService(serviceName, () => {
-                const cls = require(this.pathToRoot + config[serviceName].class);
+                const cls = config[serviceName].class
+                    ? require(this.pathToRoot + config[serviceName].class)
+                    : require(config[serviceName].module)
+                ;
                 const args = config[serviceName].arguments || [];
 
                 for (let it = args.length - 1; it >= 0; --it) {

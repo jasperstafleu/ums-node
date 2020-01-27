@@ -1,6 +1,6 @@
 {
   "event.emitter": {
-    "class": "Event/Emitter/Emitter"
+    "module": "events"
   },
   "event.controller_resolver": {
     "class": "Event/Listener/Controller/ControllerResolver",
