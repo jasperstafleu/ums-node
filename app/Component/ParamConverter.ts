@@ -1,5 +1,3 @@
-'use strict';
-
 export interface ParamConverter
 {
     supports(name: string): boolean;

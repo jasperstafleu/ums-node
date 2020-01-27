@@ -1,5 +1,3 @@
-'use strict';
-
 import {EventEmitter} from 'events';
 import {IncomingMessage, ServerResponse} from 'http';
 import {RequestEvent} from "../Event/Event/RequestEvent";

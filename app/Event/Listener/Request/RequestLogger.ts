@@ -1,5 +1,3 @@
-'use strict';
-
 import {RequestEvent} from "../../Event/RequestEvent";
 import {Logger} from "../../../Logger/Logger";
 

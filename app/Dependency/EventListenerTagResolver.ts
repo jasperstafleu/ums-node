@@ -1,5 +1,3 @@
-'use strict';
-
 import {TagResolver} from "./TagResolver";
 import {Container} from "./Container";
 import {EventEmitter} from "events";

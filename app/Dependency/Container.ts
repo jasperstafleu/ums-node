@@ -1,5 +1,3 @@
-'use strict';
-
 import {TagResolver} from "./TagResolver";
 
 export class Container

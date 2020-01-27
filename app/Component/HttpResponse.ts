@@ -1,5 +1,3 @@
-'use strict';
-
 export class HttpResponse
 {
     content: string = '';

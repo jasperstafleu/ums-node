@@ -1,3 +1,5 @@
+'use strict';
+
 import {ParamConverter} from "../../Component/ParamConverter";
 
 module.exports = class StringConverter implements ParamConverter

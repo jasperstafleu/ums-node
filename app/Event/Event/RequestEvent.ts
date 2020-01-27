@@ -1,5 +1,3 @@
-'use strict';
-
 import {KernelEvent} from "./KernelEvent";
 import {HttpResponse} from "../../Component/HttpResponse";
 
