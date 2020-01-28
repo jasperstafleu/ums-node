@@ -1,4 +1,4 @@
-export interface Controller
+export default interface Controller
 {
     
 }

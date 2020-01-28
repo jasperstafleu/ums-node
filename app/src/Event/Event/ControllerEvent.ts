@@ -1,6 +1,6 @@
-import {KernelEvent} from "./KernelEvent";
+import KernelEvent from "./KernelEvent";
 
-export class ControllerEvent extends KernelEvent
+export default class ControllerEvent extends KernelEvent
 {
     controller?: Function;
 }

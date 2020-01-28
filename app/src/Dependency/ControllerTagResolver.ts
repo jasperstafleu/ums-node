@@ -1,9 +1,9 @@
-import {TagResolver} from "./TagResolver";
-import {Container} from "./Container";
-import {ControllerResolver} from "../Event/Listener/Controller/ControllerResolver";
-import {Logger} from "../Logger/Logger";
+import TagResolver from "./TagResolver";
+import Container from "./Container";
+import ControllerResolver from "../Event/Listener/Controller/ControllerResolver";
+import Logger from "../Logger/Logger";
 
-module.exports = class ControllerTagResolver implements TagResolver
+class ControllerTagResolver implements TagResolver
 {
     protected logger: Logger;
 
@@ -29,4 +29,7 @@ module.exports = class ControllerTagResolver implements TagResolver
             );
         });
     }
-};
+}
+
+module.exports = ControllerTagResolver;
+

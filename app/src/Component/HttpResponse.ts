@@ -1,4 +1,4 @@
-export class HttpResponse
+export default class HttpResponse
 {
     content: string = '';
     httpCode: number = 200;

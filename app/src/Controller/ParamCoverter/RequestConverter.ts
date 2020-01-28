@@ -1,8 +1,8 @@
-import {ParamConverter} from "../../Component/ParamConverter";
+import ParamConverter from "../../Component/ParamConverter";
 import {IncomingMessage} from "http";
-import {RequestEvent} from "../../Event/Event/RequestEvent";
+import RequestEvent from "../../Event/Event/RequestEvent";
 
-module.exports = class RequestConverter implements ParamConverter
+class RequestConverter implements ParamConverter
 {
     protected request: undefined | IncomingMessage;
 
@@ -27,4 +27,6 @@ module.exports = class RequestConverter implements ParamConverter
             value: this.request
         }
     }
-};
+}
+
+module.exports = RequestConverter;

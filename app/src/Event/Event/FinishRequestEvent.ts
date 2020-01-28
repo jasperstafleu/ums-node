@@ -1,5 +1,5 @@
-import {KernelEvent} from "./KernelEvent";
+import KernelEvent from "./KernelEvent";
 
-export class FinishRequestEvent extends KernelEvent
+export default class FinishRequestEvent extends KernelEvent
 {
 }

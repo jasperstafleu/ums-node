@@ -1,6 +1,6 @@
 import {IncomingMessage} from "http";
 
-export class KernelEvent
+export default class KernelEvent
 {
     readonly request: IncomingMessage;
 

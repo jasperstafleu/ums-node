@@ -1,6 +1,6 @@
-import {TagResolver} from "./TagResolver";
+import TagResolver from "./TagResolver";
 
-export class Container
+export default class Container
 {
     protected fs: (filename: string) => string;
     protected pathToRoot: string = '';

@@ -1,7 +1,7 @@
-import {KernelEvent} from "./KernelEvent";
-import {HttpResponse} from "../../Component/HttpResponse";
+import KernelEvent from "./KernelEvent";
+import HttpResponse from "../../Component/HttpResponse";
 
-export class RequestEvent extends KernelEvent
+export default class RequestEvent extends KernelEvent
 {
     response?: HttpResponse;
 }

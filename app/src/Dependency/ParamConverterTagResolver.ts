@@ -1,8 +1,8 @@
-import {TagResolver} from "./TagResolver";
-import {Container} from "./Container";
-import {ControllerResolver} from "../Event/Listener/Controller/ControllerResolver";
+import TagResolver from "./TagResolver";
+import Container from "./Container";
+import ControllerResolver from "../Event/Listener/Controller/ControllerResolver";
 
-module.exports = class ParamConverterTagResolver implements TagResolver
+class ParamConverterTagResolver implements TagResolver
 {
     resolve(container: Container, serviceName: string, tag: any): void
     {
@@ -10,4 +10,6 @@ module.exports = class ParamConverterTagResolver implements TagResolver
             resolver.addParamConverter(container.get(serviceName));
         });
     }
-};
+}
+
+module.exports = ParamConverterTagResolver;

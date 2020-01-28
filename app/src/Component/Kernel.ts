@@ -1,12 +1,12 @@
 import {EventEmitter} from 'events';
 import {IncomingMessage, ServerResponse} from 'http';
-import {RequestEvent} from "../Event/Event/RequestEvent";
-import {ResponseEvent} from "../Event/Event/ResponseEvent";
-import {HttpResponse} from "./HttpResponse";
-import {FinishRequestEvent} from "../Event/Event/FinishRequestEvent";
-import {ControllerEvent} from "../Event/Event/ControllerEvent";
+import RequestEvent from "../Event/Event/RequestEvent";
+import ResponseEvent from "../Event/Event/ResponseEvent";
+import HttpResponse from "./HttpResponse";
+import FinishRequestEvent from "../Event/Event/FinishRequestEvent";
+import ControllerEvent from "../Event/Event/ControllerEvent";
 
-module.exports = class Kernel
+export default class Kernel
 {
     protected emitter: EventEmitter;
 
@@ -71,4 +71,6 @@ module.exports = class Kernel
         // TODO: Event driven exception handling
         return new HttpResponse(`${e.stack}`, 500, {'Content-type':'text/plain'});
     }
-};
+}
+
+module.exports = Kernel;

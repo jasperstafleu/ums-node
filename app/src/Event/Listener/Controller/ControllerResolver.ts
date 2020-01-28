@@ -1,9 +1,9 @@
-import {ControllerEvent} from "../../Event/ControllerEvent";
-import {Controller} from "../../../Controller/Controller";
+import ControllerEvent from "../../Event/ControllerEvent";
+import Controller from "../../../Controller/Controller";
 import {IncomingMessage} from "http";
-import {ParamConverter} from "../../../Component/ParamConverter";
+import ParamConverter from "../../../Component/ParamConverter";
 
-export class ControllerResolver
+export default class ControllerResolver
 {
     protected converters: ParamConverter[] = [];
     protected controllers: {route: string, controller: Controller, action: string, defaults: {[key: string]: string}}[] = [];

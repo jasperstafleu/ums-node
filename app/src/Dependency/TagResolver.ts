@@ -1,6 +1,6 @@
-import {Container} from "./Container";
+import Container from "./Container";
 
-export interface TagResolver
+export default interface TagResolver
 {
     resolve(container: Container, serviceName: string, tag: any): void;
 }
