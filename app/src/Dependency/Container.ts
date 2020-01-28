@@ -67,11 +67,15 @@ export default class Container
             }
 
             this.addService(serviceName, () => {
-                const cls = config[serviceName].class
+                let cls = config[serviceName].class
                     ? require(this.pathToRoot + config[serviceName].class)
                     : require(config[serviceName].module)
                 ;
                 const args = config[serviceName].arguments || [];
+
+                if (cls.default) {
+                    cls = cls.default;
+                }
 
                 for (let it = args.length - 1; it >= 0; --it) {
                     if (typeof args[it] === 'string' && args[it].charAt(0) === '@') {
@@ -119,8 +123,8 @@ export default class Container
     }
 }
 
-let container = new Container('../', require('fs').readFileSync);
-module.exports = container
+export let container = new Container('../', require('fs').readFileSync);
+container
     .loadConfigFromFile('config/services/core.json')
     .loadConfigFromFile('config/services/event_listeners.json')
     .loadConfigFromFile('config/services/controllers.json')

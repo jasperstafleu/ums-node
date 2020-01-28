@@ -45,5 +45,3 @@ export default class Logger
         console.log('['+(new Date()).toISOString()+']', level.toUpperCase(), message, context);
     }
 }
-
-module.exports = Logger;

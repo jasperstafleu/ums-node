@@ -2,7 +2,7 @@ import ParamConverter from "../../Component/ParamConverter";
 import {IncomingMessage} from "http";
 import RequestEvent from "../../Event/Event/RequestEvent";
 
-class RequestConverter implements ParamConverter
+export default class RequestConverter implements ParamConverter
 {
     protected request: undefined | IncomingMessage;
 
@@ -28,5 +28,3 @@ class RequestConverter implements ParamConverter
         }
     }
 }
-
-module.exports = RequestConverter;

@@ -67,5 +67,3 @@ export default class ControllerResolver
         return args;
     }
 }
-
-module.exports = ControllerResolver;

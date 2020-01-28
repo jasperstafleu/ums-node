@@ -2,7 +2,7 @@ import TagResolver from "./TagResolver";
 import Container from "./Container";
 import ControllerResolver from "../Event/Listener/Controller/ControllerResolver";
 
-class ParamConverterTagResolver implements TagResolver
+export default class ParamConverterTagResolver implements TagResolver
 {
     resolve(container: Container, serviceName: string, tag: any): void
     {
@@ -11,5 +11,3 @@ class ParamConverterTagResolver implements TagResolver
         });
     }
 }
-
-module.exports = ParamConverterTagResolver;

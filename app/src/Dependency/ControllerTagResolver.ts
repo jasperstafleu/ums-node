@@ -3,7 +3,7 @@ import Container from "./Container";
 import ControllerResolver from "../Event/Listener/Controller/ControllerResolver";
 import Logger from "../Logger/Logger";
 
-class ControllerTagResolver implements TagResolver
+export default class ControllerTagResolver implements TagResolver
 {
     protected logger: Logger;
 
@@ -30,6 +30,3 @@ class ControllerTagResolver implements TagResolver
         });
     }
 }
-
-module.exports = ControllerTagResolver;
-

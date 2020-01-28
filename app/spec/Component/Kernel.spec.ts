@@ -10,7 +10,6 @@ import FinishRequestEvent from "../../src/Event/Event/FinishRequestEvent";
 import ControllerEvent from "../../src/Event/Event/ControllerEvent";
 
 describe('Kernel::handle', () => {
-    const Kernel = require("../../src/Component/Kernel");
     let kernel: Kernel,
         emitter: Mock<EventEmitter>,
         request: Mock<IncomingMessage>,

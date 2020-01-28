@@ -1,9 +1,10 @@
+import StringConverter from "../../../src/Controller/ParamCoverter/StringConverter";
+
 describe('StringConverter', () => {
-    const StringConverter = require("../../../src/Controller/ParamCoverter/StringConverter");
     let converter: any;
 
     beforeEach(() => {
-        converter = new StringConverter;
+        converter = new StringConverter();
     });
 
     ///------------------------------------------------------------------------

@@ -3,7 +3,7 @@ import Container from "./Container";
 import {EventEmitter} from "events";
 import Logger from "../Logger/Logger";
 
-class EventListenerTagResolver implements TagResolver
+export default class EventListenerTagResolver implements TagResolver
 {
     protected logger: Logger;
 
@@ -28,5 +28,3 @@ class EventListenerTagResolver implements TagResolver
         });
     }
 }
-
-module.exports = EventListenerTagResolver;

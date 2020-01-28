@@ -1,6 +1,6 @@
 import ParamConverter from "../../Component/ParamConverter";
 
-class StringConverter implements ParamConverter
+export default class StringConverter implements ParamConverter
 {
     supports(name: string): boolean
     {
@@ -15,5 +15,3 @@ class StringConverter implements ParamConverter
         }
     }
 }
-
-module.exports = StringConverter;

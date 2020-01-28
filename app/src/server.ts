@@ -1,11 +1,11 @@
-import http = require("http");
+import * as http from "http";
 import {IncomingMessage, ServerResponse} from "http";
+import {container} from "./Dependency/Container";
 
 if (!(process.env.UMS_SERVER_PORT && parseInt(process.env.UMS_SERVER_PORT))) {
   throw Error('UMS_SERVER_PORT env variable must be defined and a number');
 }
 
-const container = require("./Dependency/Container");
 const server = http.createServer(
     (request: IncomingMessage, response: ServerResponse) => container.get('kernel').handle(request, response)
 );

@@ -1,13 +1,13 @@
 import RequestEvent from "../../../src/Event/Event/RequestEvent";
 import {Mock} from "ts-mocks";
 import {IncomingMessage} from "http";
+import RequestConverter from "../../../src/Controller/ParamCoverter/RequestConverter";
 
 describe('RequestConverter', () => {
-    const RequestConverter = require("../../../src/Controller/ParamCoverter/RequestConverter");
     let converter: any;
 
     beforeEach(() => {
-        converter = new RequestConverter;
+        converter = new RequestConverter();
     });
 
     ///------------------------------------------------------------------------

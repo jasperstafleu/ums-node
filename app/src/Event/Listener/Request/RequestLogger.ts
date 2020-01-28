@@ -1,7 +1,8 @@
 import RequestEvent from "../../Event/RequestEvent";
 import Logger from "../../../Logger/Logger";
 
-class RequestLogger {
+export default class RequestLogger
+{
     private logger: Logger;
 
     constructor(logger: Logger) {
@@ -14,5 +15,3 @@ class RequestLogger {
         });
     }
 }
-
-module.exports = RequestLogger;
