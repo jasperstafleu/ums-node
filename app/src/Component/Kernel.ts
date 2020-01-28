@@ -5,6 +5,7 @@ import ResponseEvent from "../Event/Event/ResponseEvent";
 import HttpResponse from "./HttpResponse";
 import FinishRequestEvent from "../Event/Event/FinishRequestEvent";
 import ControllerEvent from "../Event/Event/ControllerEvent";
+import MissingController from "../Exception/MissingController";
 
 export default class Kernel
 {
@@ -45,7 +46,7 @@ export default class Kernel
         this.emitter.emit('kernel.controller', controllerEvent);
 
         if (!controllerEvent.controller) {
-            throw new Error('Unable to find controller for path');
+            throw new MissingController('Unable to find controller for path');
         }
 
         return this.filterResponse(request, controllerEvent.controller());
@@ -53,7 +54,7 @@ export default class Kernel
 
     protected filterResponse(request: IncomingMessage, response: HttpResponse): HttpResponse
     {
-        let event = new ResponseEvent(request, response);
+        const event = new ResponseEvent(request, response);
 
         this.emitter.emit('kernel.response', event);
         this.finishRequest(request);
@@ -68,8 +69,17 @@ export default class Kernel
 
     protected handleThrowable(e: Error, request: IncomingMessage): HttpResponse
     {
-        // TODO: Event driven exception handling
-        return new HttpResponse(`${e.stack}`, 500, {'Content-type':'text/plain'});
+        // TODO: Dispatch exception event
+        // TODO: Retrieve response from exception event and use it, immediatly going to finish request otherwise
+        // TODO: Determine response code corresponding to exception (if any)
+        let response = new HttpResponse(`${e.constructor.name} ${e.stack}`, 500, {'Content-type':'text/plain'});
+
+        try {
+            return this.filterResponse(request, response);
+        } catch (e) {
+            // If even filterResponse throws an Error, give up and just use the "safe" response instead.
+            return response;
+        }
     }
 }
 
