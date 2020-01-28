@@ -1,8 +1,8 @@
-import HttpResponse from "../../src/Component/HttpResponse";
+import HttpResponse from "$stafleu/Component/HttpResponse";
 
 describe('Constructor', () => {
     it('should have default arguments', () => {
-        const response = new HttpResponse;
+        const response = new HttpResponse();
 
         expect(response.content).toBe('');
         expect(response.httpCode).toBe(200);

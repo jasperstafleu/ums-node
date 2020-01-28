@@ -1,6 +1,6 @@
-import ParamConverter from "../../Component/ParamConverter";
+import ParamConverter from "$stafleu/Component/ParamConverter";
 import {IncomingMessage} from "http";
-import RequestEvent from "../../Event/Event/RequestEvent";
+import RequestEvent from "$stafleu/Event/Event/RequestEvent";
 
 export default class RequestConverter implements ParamConverter
 {

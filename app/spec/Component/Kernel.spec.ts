@@ -1,13 +1,13 @@
 import {EventEmitter} from 'events';
 import {IncomingMessage, ServerResponse} from "http";
-import Kernel from "../../src/Component/Kernel";
+import Kernel from "$stafleu/Component/Kernel";
 import {Mock} from "ts-mocks";
-import RequestEvent from "../../src/Event/Event/RequestEvent";
-import HttpResponse from "../../src/Component/HttpResponse";
-import KernelEvent from "../../src/Event/Event/KernelEvent";
-import ResponseEvent from "../../src/Event/Event/ResponseEvent";
-import FinishRequestEvent from "../../src/Event/Event/FinishRequestEvent";
-import ControllerEvent from "../../src/Event/Event/ControllerEvent";
+import RequestEvent from "$stafleu/Event/Event/RequestEvent";
+import HttpResponse from "$stafleu/Component/HttpResponse";
+import KernelEvent from "$stafleu/Event/Event/KernelEvent";
+import ResponseEvent from "$stafleu/Event/Event/ResponseEvent";
+import FinishRequestEvent from "$stafleu/Event/Event/FinishRequestEvent";
+import ControllerEvent from "$stafleu/Event/Event/ControllerEvent";
 
 describe('Kernel::handle', () => {
     let kernel: Kernel,

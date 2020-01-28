@@ -1,4 +1,4 @@
-import StringConverter from "../../../src/Controller/ParamCoverter/StringConverter";
+import StringConverter from "$stafleu/Controller/ParamCoverter/StringConverter";
 
 describe('StringConverter', () => {
     let converter: any;

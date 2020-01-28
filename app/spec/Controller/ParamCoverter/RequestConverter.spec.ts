@@ -1,7 +1,7 @@
-import RequestEvent from "../../../src/Event/Event/RequestEvent";
+import RequestEvent from "$stafleu/Event/Event/RequestEvent";
 import {Mock} from "ts-mocks";
 import {IncomingMessage} from "http";
-import RequestConverter from "../../../src/Controller/ParamCoverter/RequestConverter";
+import RequestConverter from "$stafleu/Controller/ParamCoverter/RequestConverter";
 
 describe('RequestConverter', () => {
     let converter: any;

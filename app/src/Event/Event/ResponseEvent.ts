@@ -1,6 +1,6 @@
-import KernelEvent from "./KernelEvent";
-import HttpResponse from "../../Component/HttpResponse";
 import {IncomingMessage} from "http";
+import KernelEvent from "$stafleu/Event/Event/KernelEvent";
+import HttpResponse from "$stafleu/Component/HttpResponse";
 
 export default class ResponseEvent extends KernelEvent
 {

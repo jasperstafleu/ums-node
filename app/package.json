@@ -4,8 +4,9 @@
   "version": "0.0.1",
   "scripts": {
     "test": "jasmine-ts ./tsconfig.json --config=./jasmine.json",
-    "start": "if [ $NODE_ENV=development ]; then tsc-watch --onSuccess 'node ../dist/server.js'; else tsc && node ../dist/server.js; fi",
-    "clean": "rm -rf ../dist/*"
+    "start": "if [ $NODE_ENV=development ]; then tsc-watch --onSuccess 'node ../dist/src/server.js'; else tsc && node ../dist/src/server.js; fi",
+    "clean": "rm -rf ../dist/*",
+    "clean:all": "rm -rf ../dist/* node_modules"
   },
   "repository": {
     "type": "git",
@@ -18,8 +19,12 @@
     "url": "TODO ;)"
   },
   "homepage": "TODO",
+  "_moduleAliases": {
+    "$stafleu": "../dist/src"
+  },
   "dependencies": {
     "@types/node": "^13.1.8",
+    "module-alias": "^2.2.2",
     "typescript": "^3.7.5"
   },
   "devDependencies": {

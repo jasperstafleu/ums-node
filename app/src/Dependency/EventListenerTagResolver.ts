@@ -1,7 +1,7 @@
-import TagResolver from "./TagResolver";
-import Container from "./Container";
 import {EventEmitter} from "events";
-import Logger from "../Logger/Logger";
+import TagResolver from "$stafleu/Dependency/TagResolver";
+import Logger from "$stafleu/Logger/Logger";
+import Container from "$stafleu/Dependency/Container";
 
 export default class EventListenerTagResolver implements TagResolver
 {

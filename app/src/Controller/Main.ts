@@ -1,4 +1,4 @@
-import HttpResponse from "../Component/HttpResponse";
+import HttpResponse from "$stafleu/Component/HttpResponse";
 import {IncomingMessage} from "http";
 
 export default class Main

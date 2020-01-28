@@ -1,7 +1,7 @@
-import ControllerEvent from "../../Event/ControllerEvent";
-import Controller from "../../../Controller/Controller";
 import {IncomingMessage} from "http";
-import ParamConverter from "../../../Component/ParamConverter";
+import ParamConverter from "$stafleu/Component/ParamConverter";
+import Controller from "$stafleu/Controller/Controller";
+import ControllerEvent from "$stafleu/Event/Event/ControllerEvent";
 
 export default class ControllerResolver
 {

@@ -1,4 +1,4 @@
-import ParamConverter from "../../Component/ParamConverter";
+import ParamConverter from "$stafleu/Component/ParamConverter";
 
 export default class StringConverter implements ParamConverter
 {

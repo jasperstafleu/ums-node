@@ -1,4 +1,4 @@
-import TagResolver from "./TagResolver";
+import TagResolver from "$stafleu/Dependency/TagResolver";
 
 export default class Container
 {

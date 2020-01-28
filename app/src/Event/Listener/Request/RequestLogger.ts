@@ -1,9 +1,9 @@
-import RequestEvent from "../../Event/RequestEvent";
-import Logger from "../../../Logger/Logger";
+import Logger from "$stafleu/Logger/Logger";
+import RequestEvent from "$stafleu/Event/Event/RequestEvent";
 
 export default class RequestLogger
 {
-    private logger: Logger;
+    protected logger: Logger;
 
     constructor(logger: Logger) {
         this.logger = logger;
