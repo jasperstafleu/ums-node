@@ -14,6 +14,6 @@ class StringConverter implements ParamConverter
             value: value
         }
     }
-};
+}
 
 module.exports = StringConverter;

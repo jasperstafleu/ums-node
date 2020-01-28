@@ -25,7 +25,6 @@ describe('Kernel::handle', () => {
         kernel = new Kernel(emitter.Object);
     });
 
-
     ///------------------------------------------------------------------------
     it('should use response from request event if one is available', () => {
         const expectedResponse = new HttpResponse(
