@@ -10,23 +10,25 @@ describe("ControllerTagResolver", () => {
         resolver: ControllerTagResolver;
 
     beforeEach(() => {
-        logger = new Mock<Logger>({notice: () => {}});
+        logger = new Mock<Logger>({notice() {}});
         resolver = new ControllerTagResolver(logger.Object);
     });
 
     describe('\b.resolve', () => {
-        let container: Mock<Container>;
+        let container: Mock<Container>,
+            serviceName: string;
+
 
         beforeEach(() => {
-            container = new Mock<Container>({decorate: () => {}});
+            container = new Mock<Container>({decorate() {}});
+            serviceName = Math.random().toString();
         });
 
         it('should log a notice if tag had no action', () => {
-            const serviceName = Math.random().toString(),
-                tag = {name: Math.random().toString(), route: Math.random().toString()};
+            const tag = {name: Math.random().toString(), route: Math.random().toString()};
 
             logger.extend({
-                notice: (message) => {
+                notice(message) {
                     expect(message).toContain(tag.name);
                     expect(message).toContain(serviceName);
                 }
@@ -39,11 +41,10 @@ describe("ControllerTagResolver", () => {
         });
 
         it('should log a notice if tag had no route', () => {
-            const serviceName = Math.random().toString(),
-                tag = {name: Math.random().toString(), action: Math.random().toString()};
+            const tag = {name: Math.random().toString(), action: Math.random().toString()};
 
             logger.extend({
-                notice: (message) => {
+                notice(message) {
                     expect(message).toContain(tag.name);
                     expect(message).toContain(serviceName);
                 }
@@ -56,8 +57,7 @@ describe("ControllerTagResolver", () => {
         });
 
         it('should decorate the container by calling addController on the resolver', () => {
-            const serviceName = Math.random().toString(),
-                tag = {name: Math.random().toString(), action: Math.random().toString(), route: Math.random().toString()},
+            const tag = {name: Math.random().toString(), action: Math.random().toString(), route: Math.random().toString()},
                 controllerResolver = new Mock<ControllerResolver>(),
                 controller = new Mock<Controller>();
 
@@ -66,7 +66,7 @@ describe("ControllerTagResolver", () => {
                     expect(sn).toBe('event.controller_resolver');
                     cb(controllerResolver.Object);
                 },
-                get: (sn) => {
+                get(sn) {
                     expect(sn).toBe(serviceName);
                     return controller.Object;
                 }

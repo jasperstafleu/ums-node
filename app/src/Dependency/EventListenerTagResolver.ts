@@ -20,9 +20,9 @@ export default class EventListenerTagResolver implements TagResolver
             return;
         }
 
-        container.decorate('event.emitter', (service: EventEmitter): void => {
-            service.on(tag.event, (...args: any[]) => {
-                let service = container.get(serviceName);
+        container.decorate('event.emitter', (emitter: EventEmitter): void => {
+            emitter.on(tag.event, (...args: any[]) => {
+                const service = container.get(serviceName);
                 service[tag.method].apply(service, args);
             });
         });
