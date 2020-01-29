@@ -1,9 +1,9 @@
 {
   "event.emitter": {
-    "module": "events"
+    "class": "events"
   },
   "event.controller_resolver": {
-    "class": "Event/Listener/Controller/ControllerResolver",
+    "class": "$stafleu/Event/Listener/Controller/ControllerResolver",
     "tags": [
       {
         "name": "kernel.event_listener",
@@ -13,7 +13,7 @@
     ]
   },
   "event.request_logger": {
-    "class": "Event/Listener/Request/RequestLogger",
+    "class": "$stafleu/Event/Listener/Request/RequestLogger",
     "arguments": [
       "@logger"
     ],
@@ -23,12 +23,6 @@
         "event": "kernel.request",
         "method": "handle"
       }
-    ]
-  },
-  "event.listener_tag_resolver": {
-    "class": "Dependency/EventListenerTagResolver",
-    "arguments": [
-      "@logger"
     ]
   }
 }

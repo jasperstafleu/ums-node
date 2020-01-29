@@ -3,16 +3,16 @@ import TagResolver from "$stafleu/Dependency/TagResolver";
 export default class Container
 {
     protected fs: (filename: string) => string;
-    protected pathToRoot: string = '';
+    protected require: NodeRequire;
     protected services: {[key:string]: any} = {};
     protected tagResolvers: {[key:string]: TagResolver} = {};
     private tagsToBeResolved: Function[]= [];
     private closed: boolean = false;
 
-    constructor (pathToRoot: string, fs: (filename: string) => string)
+    constructor (fs: (filename: string) => string, require: NodeRequire)
     {
-        this.pathToRoot = pathToRoot;
         this.fs = fs;
+        this.require = require;
     }
 
     get (serviceName: string): any
@@ -31,6 +31,7 @@ export default class Container
 
     decorate (serviceName: string, decorator: (service: any) => void): void
     {
+        // TODO: throw error if service does not yet exist.
         const serviceDefinition = this.services[serviceName];
 
         // Defer actual decoration until the get method is called.
@@ -62,15 +63,12 @@ export default class Container
         const config = JSON.parse(this.fs(fileName));
 
         for (let serviceName of Object.keys(config)) {
-            if (!(config[serviceName].class || config[serviceName].module)) {
-                throw new Error(`Service '${serviceName}' has no 'class' of 'module' configuration.`);
+            if (!config[serviceName].class) {
+                throw new Error(`Service '${serviceName}' has no 'class' configuration.`);
             }
 
             this.addService(serviceName, () => {
-                let cls = config[serviceName].class
-                    ? require(this.pathToRoot + config[serviceName].class)
-                    : require(config[serviceName].module)
-                ;
+                let cls = this.require(config[serviceName].class);
                 const args = config[serviceName].arguments || [];
 
                 if (cls.default) {
@@ -79,7 +77,7 @@ export default class Container
 
                 for (let it = args.length - 1; it >= 0; --it) {
                     if (typeof args[it] === 'string' && args[it].charAt(0) === '@') {
-                        args[it] = container.get(args[it].substring(1));
+                        args[it] = this.get(args[it].substring(1));
                     }
                 }
 
@@ -122,14 +120,3 @@ export default class Container
         return this;
     }
 }
-
-export let container = new Container('../', require('fs').readFileSync);
-container
-    .loadConfigFromFile('config/services/core.json')
-    .loadConfigFromFile('config/services/event_listeners.json')
-    .loadConfigFromFile('config/services/controllers.json')
-    .addTagResolver('kernel.event_listener', container.get('event.listener_tag_resolver'))
-    .addTagResolver('controller', container.get('controller.tag_resolver'))
-    .addTagResolver('param_converter', container.get('param_converter.tag_resolver'))
-    .close()
-;

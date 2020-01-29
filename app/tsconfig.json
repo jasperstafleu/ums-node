@@ -2,7 +2,9 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "$stafleu/*": ["src/*"]
+      "$stafleu/*": ["src/*"],
+      "$stafleu_config/*": ["config/*"],
+      "$stafleu_local/*": ["local/*"]
     },
     "target": "es2019",
     "module": "commonjs",
@@ -17,6 +19,8 @@
   },
   "include": [
     "src/**/*.ts",
+    "config/**/*.ts",
+    "local/**/*.ts",
     "spec/**/*.ts"
   ],
   "exclude": [

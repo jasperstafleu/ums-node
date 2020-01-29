@@ -1,30 +1,36 @@
 {
   "logger": {
-    "class": "Logger/Logger"
+    "class": "$stafleu/Logger/Logger"
   },
   "kernel": {
-    "class": "Component/Kernel",
+    "class": "$stafleu/Component/Kernel",
     "arguments": [
       "@event.emitter"
     ]
   },
   "controller.tag_resolver": {
-    "class": "Dependency/ControllerTagResolver",
+    "class": "$stafleu/Dependency/ControllerTagResolver",
+    "arguments": [
+      "@logger"
+    ]
+  },
+  "event.listener_tag_resolver": {
+    "class": "$stafleu/Dependency/EventListenerTagResolver",
     "arguments": [
       "@logger"
     ]
   },
   "param_converter.tag_resolver": {
-    "class": "Dependency/ParamConverterTagResolver"
+    "class": "$stafleu/Dependency/ParamConverterTagResolver"
   },
   "param_converter.string": {
-    "class": "Controller/ParamCoverter/StringConverter",
+    "class": "$stafleu/Controller/ParamCoverter/StringConverter",
     "tags": [
       { "name": "param_converter" }
     ]
   },
   "param_converter.request": {
-    "class": "Controller/ParamCoverter/RequestConverter",
+    "class": "$stafleu/Controller/ParamCoverter/RequestConverter",
     "tags": [
       { "name": "param_converter" },
       {

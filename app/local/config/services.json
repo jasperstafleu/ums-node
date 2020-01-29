@@ -1,6 +1,6 @@
 {
   "controller.main": {
-    "class": "Controller/Main",
+    "class": "$stafleu_local/Controller/Main",
     "tags": [
       {
         "name": "controller",
