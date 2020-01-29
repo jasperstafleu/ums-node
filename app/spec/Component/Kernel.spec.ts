@@ -9,7 +9,7 @@ import ResponseEvent from "$stafleu/Event/Event/ResponseEvent";
 import FinishRequestEvent from "$stafleu/Event/Event/FinishRequestEvent";
 import ControllerEvent from "$stafleu/Event/Event/ControllerEvent";
 
-describe('Kernel::handle', () => {
+describe('Kernel.handle', () => {
     let kernel: Kernel,
         emitter: Mock<EventEmitter>,
         request: Mock<IncomingMessage>,
@@ -24,7 +24,6 @@ describe('Kernel::handle', () => {
         kernel = new Kernel(emitter.Object);
     });
 
-    ///------------------------------------------------------------------------
     it('should use response from request event if one is available', () => {
         const expectedResponse = new HttpResponse(
             Math.random().toString(),
@@ -69,7 +68,6 @@ describe('Kernel::handle', () => {
         expect(emitter.Object.emit).toHaveBeenCalledTimes(3);
     });
 
-    ///------------------------------------------------------------------------
     it('should display MissingController if no controller can be found', () => {
         emitter.extend({
             emit(eventName: string, event: KernelEvent): boolean {
@@ -101,7 +99,6 @@ describe('Kernel::handle', () => {
         expect(emitter.Object.emit).toHaveBeenCalledTimes(4);
     });
 
-    ///------------------------------------------------------------------------
     it('should use response from controller call if request event has no response', () => {
         const expectedResponse = new HttpResponse(Math.random().toString(), Math.random(), {});
 
@@ -133,7 +130,6 @@ describe('Kernel::handle', () => {
         expect(emitter.Object.emit).toHaveBeenCalledTimes(4);
     });
 
-    ///------------------------------------------------------------------------
     it('should recover nicely if filterResponse throws error', () => {
         const e = new Error(Math.random().toString());
 

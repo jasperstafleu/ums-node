@@ -1,15 +1,17 @@
 import TagResolver from "$stafleu/Dependency/TagResolver";
+import RecursiveDependencyInjection from "$stafleu/Exception/RecursiveDependencyInjection";
+import MissingTagName from "$stafleu/Exception/MissingTagName";
 
 export default class Container
 {
     protected fs: (filename: string) => string;
-    protected require: NodeRequire;
+    protected require: (id: string) => any;
     protected services: {[key:string]: any} = {};
     protected tagResolvers: {[key:string]: TagResolver} = {};
     private tagsToBeResolved: Function[]= [];
     private closed: boolean = false;
 
-    constructor (fs: (filename: string) => string, require: NodeRequire)
+    constructor (fs: (filename: string) => string, require: (id: string) => any)
     {
         this.fs = fs;
         this.require = require;
@@ -22,8 +24,16 @@ export default class Container
         }
 
         if (typeof this.services[serviceName] == 'function') {
-            // Overwrite original service definition to ensure service is a "singleton".
-            this.services[serviceName] = this.services[serviceName]();
+            // We are going to overwrite the service definition (a callback) by the service itself. This allows for
+            // services to be cached / singletons. While resolving the service, resolving the same service another time
+            // means we hit an infinite recursion, which must raise an exception.
+            const definition = this.services[serviceName];
+
+            this.services[serviceName] = () => {
+                throw new RecursiveDependencyInjection(`Recursive definition detected on ${serviceName}`);
+            };
+
+            this.services[serviceName] = definition();
         }
 
         return this.services[serviceName];
@@ -31,7 +41,10 @@ export default class Container
 
     decorate (serviceName: string, decorator: (service: any) => void): void
     {
-        // TODO: throw error if service does not yet exist.
+        if (!this.services[serviceName]) {
+            throw new Error(`Cannot decorate '${serviceName}': it has not yet been added`);
+        }
+
         const serviceDefinition = this.services[serviceName];
 
         // Defer actual decoration until the get method is called.
@@ -46,6 +59,11 @@ export default class Container
 
     addService(serviceName: string, callback: () => any): Container
     {
+        if (this.closed) {
+            // Mainly due to tags already having been resolved, throw error if this happens
+            throw new Error('Can not add services to a closed container');
+        }
+
         this.services[serviceName] = callback;
 
         return this;
@@ -94,13 +112,23 @@ export default class Container
 
     protected resolveTags(serviceName: string, tags: any[])
     {
-        for (let it = tags.length - 1; it >= 0; --it) {
+        for (let it = 0, len = tags.length; it < len; ++it) {
             let tag = tags[it];
-            if (!('name' in tag && this.tagResolvers[tag.name])) {
-                throw new Error(`A tag on service '${serviceName}' lacks a name, and can therefore not be resolved`);
+
+            if (!('name' in tag)) {
+                throw new MissingTagName(`A tag on service '${serviceName}' lacks a name, and can therefore not be resolved`);
             }
 
-            this.tagResolvers[tag.name].resolve(this, serviceName, tag);
+            if (this.tagResolvers[tag.name]) {
+                this.tagResolvers[tag.name].resolve(this, serviceName, tag);
+            } else {
+                // If no tag resolver has been configured for the passed tag, ignore this. It is a valid use-case
+                // (service is tagged for a no longer existing function).
+                // In fact, logging this would be nice.
+                if (this.services['logger']) {
+                    this.get('logger').debug(`Tag ${tag.name} has no resolver`);
+                }
+            }
         }
     }
 

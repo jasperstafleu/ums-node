@@ -10,7 +10,6 @@ describe('RequestConverter', () => {
         converter = new RequestConverter();
     });
 
-    ///------------------------------------------------------------------------
     it('should only support names where first seven characters are \'request\`', () => {
         expect(converter.supports('request0')).toBe(true);
         expect(converter.supports('request1')).toBe(true);
@@ -21,7 +20,6 @@ describe('RequestConverter', () => {
         expect(converter.supports(Math.random().toString())).toBe(false);
     });
 
-    ///------------------------------------------------------------------------
     it('should convert correct positions with value request', () => {
         const request = new Mock<IncomingMessage>(),
             event = new RequestEvent(request.Object),
@@ -35,10 +33,8 @@ describe('RequestConverter', () => {
         expect(result.value).toBe(request.Object);
     });
 
-    ///------------------------------------------------------------------------
     it('should throw an error if the request object has not yet been set', () => {
-        expect(() => converter.convert('request0', Math.random().toString()))
-            .toThrow(new Error('Request is not available'));
+        expect(() => converter.convert('request0', Math.random().toString())).toThrowError(Error);
     });
 });
 

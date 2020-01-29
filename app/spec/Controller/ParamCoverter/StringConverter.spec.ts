@@ -7,7 +7,6 @@ describe('StringConverter', () => {
         converter = new StringConverter();
     });
 
-    ///------------------------------------------------------------------------
     it('should only support names where first six characters are \'string\`', () => {
         expect(converter.supports('string0')).toBe(true);
         expect(converter.supports('string1')).toBe(true);
@@ -17,7 +16,6 @@ describe('StringConverter', () => {
         expect(converter.supports(Math.random().toString())).toBe(false);
     });
 
-    ///------------------------------------------------------------------------
     it('should convert correct positions with value request', () => {
         const value = Math.random().toString(),
             position = Math.round(Math.random() * 100),
