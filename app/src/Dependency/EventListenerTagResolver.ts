@@ -5,11 +5,8 @@ import Container from "$stafleu/Dependency/Container";
 
 export default class EventListenerTagResolver implements TagResolver
 {
-    protected logger: Logger;
-
-    constructor(logger: Logger)
+    constructor(protected logger: Logger)
     {
-        this.logger = logger;
     }
 
     resolve(container: Container, serviceName: string, tag: any): void

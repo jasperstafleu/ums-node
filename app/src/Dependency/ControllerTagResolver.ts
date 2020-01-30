@@ -5,11 +5,8 @@ import ControllerResolver from "$stafleu/Event/Listener/Controller/ControllerRes
 
 export default class ControllerTagResolver implements TagResolver
 {
-    protected logger: Logger;
-
-    constructor(logger: Logger)
+    constructor(protected logger: Logger)
     {
-        this.logger = logger;
     }
 
     resolve(container: Container, serviceName: string, tag: any): void

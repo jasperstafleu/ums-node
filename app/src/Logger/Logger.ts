@@ -42,6 +42,6 @@ export default class Logger
 
     log(level: string, message: string, context: object = {}): void
     {
-        console.log('['+(new Date()).toISOString()+']', level.toUpperCase(), message, context);
+        console.log(new Date(), level.toUpperCase(), message, context);
     }
 }

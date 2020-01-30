@@ -4,17 +4,13 @@ import MissingTagName from "$stafleu/Exception/MissingTagName";
 
 export default class Container
 {
-    protected fs: (filename: string) => string;
-    protected require: (id: string) => any;
     protected services: {[key:string]: any} = {};
     protected tagResolvers: {[key:string]: TagResolver} = {};
     private tagsToBeResolved: Function[]= [];
     private closed: boolean = false;
 
-    constructor (fs: (filename: string) => string, require: (id: string) => any)
+    constructor (protected fs: (filename: string) => string, protected require: (id: string) => any)
     {
-        this.fs = fs;
-        this.require = require;
     }
 
     get (serviceName: string): any

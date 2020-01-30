@@ -3,10 +3,7 @@ import RequestEvent from "$stafleu/Event/Event/RequestEvent";
 
 export default class RequestLogger
 {
-    protected logger: Logger;
-
-    constructor(logger: Logger) {
-        this.logger = logger;
+    constructor(protected logger: Logger) {
     }
 
     handle(event: RequestEvent): void {

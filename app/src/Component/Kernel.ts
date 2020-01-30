@@ -9,11 +9,8 @@ import MissingController from "$stafleu/Exception/MissingController";
 
 export default class Kernel
 {
-    protected emitter: EventEmitter;
-
-    constructor(emitter: EventEmitter)
+    constructor(protected emitter: EventEmitter)
     {
-        this.emitter = emitter;
     }
 
     handle(request: IncomingMessage, response: ServerResponse): void
