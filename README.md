@@ -1,5 +1,16 @@
+Node UMS
+========
+
+A naive attempt to learn about NodeJS by reproducing my most favorite parts of the PHP Symfony Framework.
+
+Notes
+-----
+
 - In production mode, typescript is automatically compiled before the server is started
-- In development mode, typescript changes is watched and, on succesful compilation, the server is restarted.
+- In development mode, typescript changes are watched and, on successful compilation, the server is restarted.
+
+Installation guide
+------------------
 
 Run npm install
 `docker-compose run ums_node npm install`
