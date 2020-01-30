@@ -90,7 +90,7 @@ describe('ControllerResolver', () => {
 
         // TODO: If I have two test suites, I probably have two responsibilities as well, and should therefore split the class
         describe('arguments resolution', () => {
-            const sConverter = <ParamConverter> {
+            const sConverter: ParamConverter = {
                     supports(name: string): boolean {
                         return name.charAt(0) === 's';
                     },
@@ -161,7 +161,7 @@ describe('ControllerResolver', () => {
             it('should support multiple parameter type converters', () => {
                 const param = Math.random().toString(36);
 
-                resolver.addParamConverter(<ParamConverter> {
+                resolver.addParamConverter({
                     supports(name: string): boolean {
                         return name.charAt(0) === 't';
                     },
@@ -182,7 +182,7 @@ describe('ControllerResolver', () => {
                 spyOn(sConverter, 'supports');
                 spyOn(sConverter, 'convert');
 
-                resolver.addParamConverter(<ParamConverter> {
+                resolver.addParamConverter({
                     supports(name: string): boolean {
                         return name.charAt(0) === 's';
                     },
