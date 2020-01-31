@@ -79,7 +79,7 @@ export default class Kernel
         // TODO: Dispatch exception event
         // TODO: Retrieve response from exception event and use it, immediatly going to finish request otherwise
         // TODO: Determine response code corresponding to exception (if any)
-        let response = new HttpResponse(`${e.constructor.name} ${e.stack}`, 500, {'Content-type':'text/plain'});
+        let response = new HttpResponse(`${e.constructor.name} ${e.stack}`, 500);
 
         try {
             return this.filterResponse(request, response);

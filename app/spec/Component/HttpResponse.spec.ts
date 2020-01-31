@@ -6,7 +6,7 @@ describe('Constructor', () => {
 
         expect(response.content).toBe('');
         expect(response.httpCode).toBe(200);
-        expect(response.headers).toEqual({"Content-type": "text/html"});
+        expect(response.headers).toEqual({"Content-Type": "text/plain"});
     });
 
     it('should resolve non-default arguments correctly', () => {

@@ -81,7 +81,7 @@ describe('Kernel.handle', () => {
 
         response.extend({
             setHeader(name: string, value: number | string | string[]): void {
-                expect(name + ': ' + value).toBe('Content-type: text/plain');
+                expect(name + ': ' + value).toBe('Content-Type: text/plain');
             },
             end(): void {
                 expect(arguments[0]).toContain('MissingController');

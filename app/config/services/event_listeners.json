@@ -24,5 +24,15 @@
         "method": "handle"
       }
     ]
+  },
+  "event.string_response": {
+    "class": "$stafleu/Event/Listener/View/StringResponseTransformer",
+    "tags": [
+      {
+        "name": "kernel.event_listener",
+        "event": "kernel.view",
+        "method": "transform"
+      }
+    ]
   }
 }
