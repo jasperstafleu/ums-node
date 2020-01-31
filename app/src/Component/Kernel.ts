@@ -6,6 +6,7 @@ import HttpResponse from "$stafleu/Component/HttpResponse";
 import FinishRequestEvent from "$stafleu/Event/Event/FinishRequestEvent";
 import ControllerEvent from "$stafleu/Event/Event/ControllerEvent";
 import MissingController from "$stafleu/Exception/MissingController";
+import ViewEvent from "$stafleu/Event/Event/ViewEvent";
 
 export default class Kernel
 {
@@ -46,7 +47,19 @@ export default class Kernel
             throw new MissingController('Unable to find controller for path');
         }
 
-        return this.filterResponse(request, controllerEvent.controller());
+        const controllerResult = controllerEvent.controller();
+        if (controllerResult instanceof HttpResponse) {
+            return this.filterResponse(request, controllerResult);
+        }
+
+        const viewEvent = new ViewEvent(request, controllerResult);
+        this.emitter.emit('kernel.view', viewEvent);
+
+        if (viewEvent.response instanceof HttpResponse) {
+            return this.filterResponse(request, viewEvent.response);
+        }
+
+        throw new ControllerDoesNotReturnResponse();
     }
 
     protected filterResponse(request: IncomingMessage, response: HttpResponse): HttpResponse
