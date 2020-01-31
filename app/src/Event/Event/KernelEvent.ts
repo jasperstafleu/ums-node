@@ -7,8 +7,9 @@ export default class KernelEvent
     }
 }
 
-export { default as ControllerEvent } from "$stafleu/Event/Event/ControllerEvent";
-export { default as FinishRequestEvent } from "$stafleu/Event/Event/FinishRequestEvent";
-export { default as RequestEvent } from "$stafleu/Event/Event/RequestEvent";
-export { default as ResponseEvent } from "$stafleu/Event/Event/ResponseEvent";
-export { default as ViewEvent } from "$stafleu/Event/Event/ViewEvent";
+export {default as ControllerEvent} from "$stafleu/Event/Event/ControllerEvent";
+export {default as FinishRequestEvent} from "$stafleu/Event/Event/FinishRequestEvent";
+export {default as RequestEvent} from "$stafleu/Event/Event/RequestEvent";
+export {default as ResponseEvent} from "$stafleu/Event/Event/ResponseEvent";
+export {default as TerminateEvent} from "$stafleu/Event/Event/TerminateEvent";
+export {default as ViewEvent} from "$stafleu/Event/Event/ViewEvent";

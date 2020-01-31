@@ -3,7 +3,7 @@ import {IncomingMessage, ServerResponse} from "http";
 import Kernel from "$stafleu/Component/Kernel";
 import {Mock} from "ts-mocks";
 import HttpResponse from "$stafleu/Component/HttpResponse";
-import {default as KernelEvent, ControllerEvent, FinishRequestEvent, RequestEvent, ResponseEvent, ViewEvent} from "$stafleu/Event/Event/KernelEvent";
+import {default as KernelEvent, ControllerEvent, FinishRequestEvent, RequestEvent, ResponseEvent, TerminateEvent, ViewEvent} from "$stafleu/Event/Event/KernelEvent";
 
 describe('Kernel.handle', () => {
     let kernel: Kernel,
@@ -36,6 +36,7 @@ describe('Kernel.handle', () => {
                     event.response = expectedResponse;
                 } else if (eventName === 'kernel.response' && event instanceof ResponseEvent) {
                 } else if (eventName === 'kernel.finish_request' && event instanceof FinishRequestEvent) {
+                } else if (eventName === 'kernel.terminate' && event instanceof TerminateEvent) {
                 } else {
                     fail(`Event name '${eventName}' and type of event '${event.constructor.name}' do not match`);
                 }
@@ -61,7 +62,7 @@ describe('Kernel.handle', () => {
 
         expect(response.Object.statusCode).toBe(expectedResponse.httpCode);
         expect(response.Object.setHeader).toHaveBeenCalledTimes(2);
-        expect(emitter.Object.emit).toHaveBeenCalledTimes(3);
+        expect(emitter.Object.emit).toHaveBeenCalledTimes(4);
     });
 
     it('should display MissingController if no controller can be found', () => {
@@ -71,6 +72,7 @@ describe('Kernel.handle', () => {
                 } else if (eventName === 'kernel.controller' && event instanceof ControllerEvent) {
                 } else if (eventName === 'kernel.response' && event instanceof ResponseEvent) {
                 } else if (eventName === 'kernel.finish_request' && event instanceof FinishRequestEvent) {
+                } else if (eventName === 'kernel.terminate' && event instanceof TerminateEvent) {
                 } else {
                     fail(`Event name '${eventName}' and type of event '${event.constructor.name}' do not match`);
                 }
@@ -92,7 +94,7 @@ describe('Kernel.handle', () => {
 
         expect(response.Object.statusCode).toBe(500);
         expect(response.Object.setHeader).toHaveBeenCalledTimes(1);
-        expect(emitter.Object.emit).toHaveBeenCalledTimes(4);
+        expect(emitter.Object.emit).toHaveBeenCalledTimes(5);
     });
 
     it('should use response from controller call if request event has no response', () => {
@@ -105,6 +107,7 @@ describe('Kernel.handle', () => {
                     event.controller = () => expectedResponse;
                 } else if (eventName === 'kernel.response' && event instanceof ResponseEvent) {
                 } else if (eventName === 'kernel.finish_request' && event instanceof FinishRequestEvent) {
+                } else if (eventName === 'kernel.terminate' && event instanceof TerminateEvent) {
                 } else {
                     fail(`Event name '${eventName}' and type of event '${event.constructor.name}' do not match`);
                 }
@@ -123,7 +126,7 @@ describe('Kernel.handle', () => {
 
         expect(response.Object.statusCode).toBe(expectedResponse.httpCode);
         expect(response.Object.setHeader).toHaveBeenCalledTimes(0);
-        expect(emitter.Object.emit).toHaveBeenCalledTimes(4);
+        expect(emitter.Object.emit).toHaveBeenCalledTimes(5);
     });
 
     it('should recover nicely if filterResponse throws error', () => {
@@ -135,6 +138,7 @@ describe('Kernel.handle', () => {
                     event.response = new HttpResponse();
                 } else if (eventName === 'kernel.response' && event instanceof ResponseEvent) {
                     throw e;
+                } else if (eventName === 'kernel.terminate' && event instanceof TerminateEvent) {
                 } else {
                     fail(`Event name '${eventName}' and type of event '${event.constructor.name}' do not match`);
                 }
@@ -153,7 +157,7 @@ describe('Kernel.handle', () => {
 
         expect(response.Object.statusCode).toBe(500);
         expect(response.Object.setHeader).toHaveBeenCalledTimes(1);
-        expect(emitter.Object.emit).toHaveBeenCalledTimes(3); // request, response, response
+        expect(emitter.Object.emit).toHaveBeenCalledTimes(4); // request, response, response
     });
 
     it('should raise ViewEvent iff controller result is not a Response object, and use the Response of the event as actual response', () => {
@@ -170,6 +174,7 @@ describe('Kernel.handle', () => {
                     expect(event.controllerResult).toBe(controllerResult);
                     event.response = expectedResponse;
                 } else if (eventName === 'kernel.finish_request' && event instanceof FinishRequestEvent) {
+                } else if (eventName === 'kernel.terminate' && event instanceof TerminateEvent) {
                 } else {
                     fail(`Event name '${eventName}' and type of event '${event.constructor.name}' do not match`);
                 }
@@ -188,7 +193,7 @@ describe('Kernel.handle', () => {
 
         expect(response.Object.statusCode).toBe(expectedResponse.httpCode);
         expect(response.Object.setHeader).toHaveBeenCalledTimes(0);
-        expect(emitter.Object.emit).toHaveBeenCalledTimes(5);
+        expect(emitter.Object.emit).toHaveBeenCalledTimes(6);
     });
 
     it('should throw ControllerDoesNotReturnResponse if even the ViewEvent does not hold HttpResponse', () => {
@@ -203,6 +208,7 @@ describe('Kernel.handle', () => {
                 } else if (eventName === 'kernel.view' && event instanceof ViewEvent) {
                     expect(event.controllerResult).toBe(controllerResult);
                 } else if (eventName === 'kernel.finish_request' && event instanceof FinishRequestEvent) {
+                } else if (eventName === 'kernel.terminate' && event instanceof TerminateEvent) {
                 } else {
                     fail(`Event name '${eventName}' and type of event '${event.constructor.name}' do not match`);
                 }
@@ -221,7 +227,7 @@ describe('Kernel.handle', () => {
 
         expect(response.Object.statusCode).toBe(500);
         expect(response.Object.setHeader).toHaveBeenCalledTimes(1);
-        expect(emitter.Object.emit).toHaveBeenCalledTimes(5);
+        expect(emitter.Object.emit).toHaveBeenCalledTimes(6);
     });
 });
 

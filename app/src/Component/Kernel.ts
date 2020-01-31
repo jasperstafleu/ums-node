@@ -1,7 +1,7 @@
 import {EventEmitter} from 'events';
 import {IncomingMessage, ServerResponse} from 'http';
 import HttpResponse from "$stafleu/Component/HttpResponse";
-import {ControllerEvent, FinishRequestEvent, RequestEvent, ResponseEvent, ViewEvent} from "$stafleu/Event/Event/KernelEvent";
+import {ControllerEvent, FinishRequestEvent, RequestEvent, ResponseEvent, TerminateEvent, ViewEvent} from "$stafleu/Event/Event/KernelEvent";
 import MissingController from "$stafleu/Exception/MissingController";
 import ControllerDoesNotReturnResponse from "$stafleu/Exception/ControllerDoesNotReturnResponse";
 
@@ -26,6 +26,8 @@ export default class Kernel
             response.setHeader(name, httpResponse.headers[name]);
         }
         response.end(httpResponse.content);
+
+        this.emitter.emit('kernel.terminate', new TerminateEvent(request, httpResponse));
     }
 
     protected handleRaw(request: IncomingMessage): HttpResponse
