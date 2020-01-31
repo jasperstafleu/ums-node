@@ -1,4 +1,3 @@
-class ControllerDoesNotReturnResponse extends Error
+export default class ControllerDoesNotReturnResponse extends Error
 {
-
 }

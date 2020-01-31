@@ -2,13 +2,8 @@ import {EventEmitter} from 'events';
 import {IncomingMessage, ServerResponse} from "http";
 import Kernel from "$stafleu/Component/Kernel";
 import {Mock} from "ts-mocks";
-import RequestEvent from "$stafleu/Event/Event/RequestEvent";
 import HttpResponse from "$stafleu/Component/HttpResponse";
-import KernelEvent from "$stafleu/Event/Event/KernelEvent";
-import ResponseEvent from "$stafleu/Event/Event/ResponseEvent";
-import FinishRequestEvent from "$stafleu/Event/Event/FinishRequestEvent";
-import ControllerEvent from "$stafleu/Event/Event/ControllerEvent";
-import ViewEvent from "$stafleu/Event/Event/ViewEvent";
+import {default as KernelEvent, ControllerEvent, FinishRequestEvent, RequestEvent, ResponseEvent, ViewEvent} from "$stafleu/Event/Event/KernelEvent";
 
 describe('Kernel.handle', () => {
     let kernel: Kernel,
@@ -193,6 +188,39 @@ describe('Kernel.handle', () => {
 
         expect(response.Object.statusCode).toBe(expectedResponse.httpCode);
         expect(response.Object.setHeader).toHaveBeenCalledTimes(0);
+        expect(emitter.Object.emit).toHaveBeenCalledTimes(5);
+    });
+
+    it('should throw ControllerDoesNotReturnResponse if even the ViewEvent does not hold HttpResponse', () => {
+        const controllerResult = new Date;
+
+        emitter.extend({
+            emit(eventName: string, event: KernelEvent): boolean {
+                if (eventName === 'kernel.request' && event instanceof RequestEvent) {
+                } else if (eventName === 'kernel.controller' && event instanceof ControllerEvent) {
+                    event.controller = () => controllerResult;
+                } else if (eventName === 'kernel.response' && event instanceof ResponseEvent) {
+                } else if (eventName === 'kernel.view' && event instanceof ViewEvent) {
+                    expect(event.controllerResult).toBe(controllerResult);
+                } else if (eventName === 'kernel.finish_request' && event instanceof FinishRequestEvent) {
+                } else {
+                    fail(`Event name '${eventName}' and type of event '${event.constructor.name}' do not match`);
+                }
+
+                return true;
+            }
+        });
+
+        response.extend({
+            end(): void {
+                expect(arguments[0]).toContain('ControllerDoesNotReturnResponse');
+            }
+        });
+
+        kernel.handle(request.Object, response.Object);
+
+        expect(response.Object.statusCode).toBe(500);
+        expect(response.Object.setHeader).toHaveBeenCalledTimes(1);
         expect(emitter.Object.emit).toHaveBeenCalledTimes(5);
     });
 });

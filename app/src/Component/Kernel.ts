@@ -1,12 +1,9 @@
 import {EventEmitter} from 'events';
 import {IncomingMessage, ServerResponse} from 'http';
-import RequestEvent from "$stafleu/Event/Event/RequestEvent";
-import ResponseEvent from "$stafleu/Event/Event/ResponseEvent";
 import HttpResponse from "$stafleu/Component/HttpResponse";
-import FinishRequestEvent from "$stafleu/Event/Event/FinishRequestEvent";
-import ControllerEvent from "$stafleu/Event/Event/ControllerEvent";
+import {ControllerEvent, FinishRequestEvent, RequestEvent, ResponseEvent, ViewEvent} from "$stafleu/Event/Event/KernelEvent";
 import MissingController from "$stafleu/Exception/MissingController";
-import ViewEvent from "$stafleu/Event/Event/ViewEvent";
+import ControllerDoesNotReturnResponse from "$stafleu/Exception/ControllerDoesNotReturnResponse";
 
 export default class Kernel
 {
