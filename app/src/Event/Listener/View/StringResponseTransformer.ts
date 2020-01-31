@@ -5,7 +5,7 @@ export default class StringResponseTransformer
 {
     transform(event: ViewEvent): void
     {
-        if (typeof event.controllerResult !== 'string') {
+        if (event.response || typeof event.controllerResult !== 'string') {
             return;
         }
 
