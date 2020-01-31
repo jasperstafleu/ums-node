@@ -25,7 +25,7 @@
     "$stafleu_local": "../dist/local"
   },
   "dependencies": {
-    "@types/node": "^13.1.8",
+    "@types/node": "^13.7.0",
     "module-alias": "^2.2.2",
     "typescript": "^3.7.5"
   },
