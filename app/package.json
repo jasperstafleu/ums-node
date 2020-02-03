@@ -10,15 +10,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "TODO"
+    "url": "https://github.com/jasperstafleu/ums-node.git"
   },
   "keywords": [],
   "author": "Jasper Stafleu",
   "license": "ISC",
   "bugs": {
-    "url": "TODO ;)"
+    "url": "https://github.com/jasperstafleu/ums-node/issues"
   },
-  "homepage": "TODO",
+  "homepage": "https://github.com/jasperstafleu/ums-node",
   "_moduleAliases": {
     "$stafleu": "../dist/src",
     "$stafleu_config": "../dist/config",
