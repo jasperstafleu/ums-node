@@ -34,5 +34,18 @@
         "method": "transform"
       }
     ]
+  },
+  "event.view_response": {
+    "class": "$stafleu/Event/Listener/View/ViewResponseTransformer",
+    "arguments": [
+      "@templating"
+    ],
+    "tags": [
+      {
+        "name": "kernel.event_listener",
+        "event": "kernel.view",
+        "method": "transform"
+      }
+    ]
   }
 }

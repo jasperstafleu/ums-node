@@ -1,6 +1,7 @@
 import {IncomingMessage} from "http";
 import Controller from "$stafleu/Controller/Controller";
 import TemplateEngine from "$stafleu/Templating/Engine";
+import View from "$stafleu/Component/View";
 
 export default class Main implements Controller
 {
@@ -8,9 +9,9 @@ export default class Main implements Controller
     {
     }
 
-    index(name: string, request: IncomingMessage): string
+    index(name: string, request: IncomingMessage): View
     {
-        return this.templating.render('local/template/helloWorld.html.jstpl', {
+        return new View('local/template/helloWorld.html.jstpl', {
             name: name,
             url: request.url
         });
