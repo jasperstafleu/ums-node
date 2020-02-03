@@ -1,6 +1,6 @@
 import {IncomingMessage} from "http";
 import Controller from "$stafleu/Controller/Controller";
-import View from "$s`tafleu/Component/View";
+import View from "$stafleu/Component/View";
 
 export default class Main implements Controller
 {
