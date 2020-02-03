@@ -10,6 +10,10 @@ describe('Container', () => {
         fs: (fileName: string) => string,
         require: (module: string) => any;
 
+    function getRandomClassName() {
+        return Math.random().toString(36).replace('\.', '');
+    }
+
     beforeEach(() => {
         fs = (fileName: string) => fileName;
         require = () => {};
@@ -66,7 +70,7 @@ describe('Container', () => {
         class TestClass { constructor(public arg0?: any, public arg1?: any) {} }
 
         it('should throw error if a service is defined without class', () => {
-            const fileName = Math.random().toString(),
+            const fileName = Math.random().toString(36),
                 serviceDefinition = {test1: {}};
 
             fs = (fn) => JSON.stringify(fn === fileName ? serviceDefinition : {});
@@ -76,7 +80,7 @@ describe('Container', () => {
 
         it('should create new instances of the class that was required', () => {
             const fileName = Math.random().toString(),
-                requiredClass = Math.random().toString(),
+                requiredClass = getRandomClassName(),
                 serviceDefinition = {test1: {class: requiredClass}}
             ;
 
@@ -95,7 +99,7 @@ describe('Container', () => {
 
         it('should defer the new method to default if default import exists', () => {
             const fileName = Math.random().toString(),
-                requiredClass = Math.random().toString(),
+                requiredClass = getRandomClassName(),
                 serviceDefinition = {test1: {class: requiredClass}};
 
             fs = (fn) => JSON.stringify(fn === fileName ? serviceDefinition : {});
@@ -109,7 +113,7 @@ describe('Container', () => {
 
         it('should pass the values in the arguments configuration to the constructor', () => {
             const fileName = Math.random().toString(),
-                requiredClass = Math.random().toString(),
+                requiredClass = getRandomClassName(),
                 serviceDefinition = {test1: {class: requiredClass, arguments: [Math.random(), Math.random().toString()]}};
 
             fs = (fn) => JSON.stringify(fn === fileName ? serviceDefinition : {});
@@ -124,7 +128,7 @@ describe('Container', () => {
 
         it('should transform strings in the arguments starting with @ to corresponding services', () => {
             const fileName = Math.random().toString(),
-                requiredClass = Math.random().toString(),
+                requiredClass = getRandomClassName(),
                 serviceDefinition = {
                     test1: {class: requiredClass, arguments: ['@test2']},
                     test2: {class: requiredClass}
@@ -143,7 +147,7 @@ describe('Container', () => {
 
         it('should throw error when recursive injection detected at get time', () => {
             const fileName = Math.random().toString(),
-                requiredClass = Math.random().toString(),
+                requiredClass = getRandomClassName(),
                 serviceDefinition = {
                     test1: {class: requiredClass, arguments: ['@test2']},
                     test2: {class: requiredClass, arguments: ['@test1']}
@@ -154,6 +158,66 @@ describe('Container', () => {
 
             container.loadConfigFromFile(fileName);
             expect(() => container.get('test1')).toThrowError(RecursiveDependencyInjection);
+        });
+
+        it('should resolve dots in the class name as retrieving members of require', () => {
+            const fileName = Math.random().toString(),
+                requiredClass = getRandomClassName(),
+                serviceDefinition = {test1: {class: requiredClass+'.property'}}
+            ;
+
+            fs = (fn) => JSON.stringify(fn === fileName ? serviceDefinition : {});
+            require = (id) => {
+                expect(id).toBe(requiredClass);
+
+                return {property: TestClass};
+            };
+
+            container.loadConfigFromFile(fileName);
+            const service = container.get('test1');
+
+            expect(service).toBeInstanceOf(TestClass);
+        });
+
+        it('should allow for the required class not to be a constructor, but an instance', () => {
+            const fileName = Math.random().toString(),
+                requiredClass = getRandomClassName(),
+                serviceDefinition = {test1: {class: requiredClass+'.prop.instance'}},
+                instance = new TestClass()
+            ;
+
+            fs = (fn) => JSON.stringify(fn === fileName ? serviceDefinition : {});
+            require = (id) => {
+                expect(id).toBe(requiredClass);
+
+                return {prop: {instance: instance}};
+            };
+
+            container.loadConfigFromFile(fileName);
+            const service = container.get('test1');
+
+            expect(service).toBeInstanceOf(TestClass);
+            expect(service).toBe(instance);
+        });
+
+        it('should allow for the required class not to be a constructor, but a factory', () => {
+            const fileName = Math.random().toString(),
+                requiredClass = getRandomClassName(),
+                serviceDefinition = {test1: {class: requiredClass, arguments: [Math.random(), Math.random()]}};
+
+            fs = (fn) => JSON.stringify(fn === fileName ? serviceDefinition : {});
+            require = (id) => {
+                expect(id).toBe(requiredClass);
+
+                return (arg0: any, arg1: any) => new TestClass(arg0, arg1);
+            };
+
+            container.loadConfigFromFile(fileName);
+            const service = container.get('test1');
+
+            expect(service).toBeInstanceOf(TestClass);
+            expect(service.arg0).toBe(serviceDefinition.test1.arguments[0]);
+            expect(service.arg1).toBe(serviceDefinition.test1.arguments[1]);
         });
     });
 

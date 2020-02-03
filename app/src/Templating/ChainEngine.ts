@@ -4,15 +4,9 @@ export default class ChainEngine implements Engine
 {
     protected engines: Engine[] = [];
 
-    render(name: string, parameters: { [p: string]: any} = {}): string
+    addEngine(engine: Engine): void
     {
-        for (let it = this.engines.length - 1; it >= 0; --it) {
-            if (this.engines[it].supports(name)) {
-                return this.engines[it].render(name, parameters);
-            }
-        }
-
-        throw new Error(`No supporting render engine found for ${name}.`);
+        this.engines.push(engine);
     }
 
     supports(name: string): boolean
@@ -26,8 +20,14 @@ export default class ChainEngine implements Engine
         return false;
     }
 
-    addEngine(engine: Engine): void
+    render(name: string, parameters: { [p: string]: any} = {}): string
     {
-        this.engines.push(engine);
+        for (let it = this.engines.length - 1; it >= 0; --it) {
+            if (this.engines[it].supports(name)) {
+                return this.engines[it].render(name, parameters);
+            }
+        }
+
+        throw new Error(`No supporting render engine found for ${name}.`);
     }
 }

@@ -3,6 +3,16 @@ import ParamConverter from "$stafleu/Component/ParamConverter";
 import Controller from "$stafleu/Controller/Controller";
 import ControllerEvent from "$stafleu/Event/Event/ControllerEvent";
 
+class ControllerReference
+{
+    constructor(
+        public controller: any,
+        public action: string,
+        public routeArgs: {[key: string]: string}
+    ) {
+    }
+}
+
 export default class ControllerResolver
 {
     protected converters: ParamConverter[] = [];
@@ -28,11 +38,11 @@ export default class ControllerResolver
         const result = this.getController(event.request);
 
         if (result !== undefined) {
-            event.controller = (): any => result.action.apply(result.action, this.getParameters(result.routeArgs));
+            event.controller = () => (result.controller[result.action] as any).apply(result.controller, this.getParameters(result.routeArgs));
         }
     }
 
-    protected getController(request: IncomingMessage): undefined | {action: Function, routeArgs: {[key: string]: string}}
+    protected getController(request: IncomingMessage): undefined | ControllerReference
     {
         let match, routeDefinition;
 
@@ -41,10 +51,11 @@ export default class ControllerResolver
             match = request.url !== undefined && (new RegExp(routeDefinition.route)).exec(request.url);
 
             if (match) {
-                return {
-                    action: (routeDefinition.controller as any)[routeDefinition.action],
-                    routeArgs: typeof match === 'object' ? {...routeDefinition.defaults, ...match.groups} : routeDefinition.defaults
-                };
+                return new ControllerReference(
+                    routeDefinition.controller,
+                    routeDefinition.action,
+                    typeof match === 'object' ? {...routeDefinition.defaults, ...match.groups} : routeDefinition.defaults
+                );
             }
         }
 

@@ -82,20 +82,36 @@ export default class Container
             }
 
             this.addService(serviceName, () => {
-                let cls = this.require(config[serviceName].class);
-                const args = config[serviceName].arguments || [];
+                let cls;
 
-                if (cls.default) {
-                    cls = cls.default;
+                if (config[serviceName].class.includes('.')) {
+                    let parts = config[serviceName].class.split('.');
+                    cls = this.require(parts.shift());
+                    for (let part = parts.shift(); part; part = parts.shift()) {
+                        cls = cls[part];
+                    }
+                } else {
+                    cls = this.require(config[serviceName].class);
+
+                    if (cls.default) {
+                        cls = cls.default;
+                    }
                 }
 
+                const args = config[serviceName].arguments || [];
                 for (let it = args.length - 1; it >= 0; --it) {
                     if (typeof args[it] === 'string' && args[it].charAt(0) === '@') {
                         args[it] = this.get(args[it].substring(1));
                     }
                 }
 
-                return new cls(...args);
+                try {
+                    return new cls(...args);
+                } catch (e) {
+                    // Requirement is not a constructor; it should therefore be a factory (if arguments were supplied)
+                    // or a module inclusion of a function
+                    return Array.isArray(config[serviceName].arguments) ? cls(...args) : cls;
+                }
             });
 
             if (config[serviceName].tags) {

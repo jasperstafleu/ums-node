@@ -8,6 +8,12 @@
       "@event.emitter"
     ]
   },
+  "fileReader": {
+    "class": "fs.readFileSync"
+  },
+  "fileChecker": {
+    "class": "fs.existsSync"
+  },
   "controller.tag_resolver": {
     "class": "$stafleu/Dependency/ControllerTagResolver",
     "arguments": [
@@ -18,6 +24,22 @@
     "class": "$stafleu/Dependency/EventListenerTagResolver",
     "arguments": [
       "@logger"
+    ]
+  },
+  "templating": {
+    "class": "$stafleu/Templating/ChainEngine"
+  },
+  "templating.tag_resolver": {
+    "class": "$stafleu/Templating/EngineTagResolver"
+  },
+  "templating.jstpl": {
+    "class": "$stafleu/Templating/JsEngine",
+    "arguments": [
+      "@fileChecker",
+      "@fileReader"
+    ],
+    "tags": [
+      { "name":  "templating.engine" }
     ]
   },
   "param_converter.tag_resolver": {

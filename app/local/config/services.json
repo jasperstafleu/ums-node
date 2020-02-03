@@ -1,6 +1,9 @@
 {
   "controller.main": {
     "class": "$stafleu_local/Controller/Main",
+    "arguments": [
+      "@templating"
+    ],
     "tags": [
       {
         "name": "controller",

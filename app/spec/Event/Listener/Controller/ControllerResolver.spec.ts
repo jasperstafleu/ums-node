@@ -41,12 +41,12 @@ describe('ControllerResolver', () => {
             const assertCorrectController = () => {
                 resolver.handle(event);
 
-                expect(actionSpy).toHaveBeenCalledTimes(0); // controller's action should not have been yet
+                expect(actionSpy).not.toHaveBeenCalled(); // controller's action should not have been yet
 
                 expect(event.controller).toBeInstanceOf(Function);
                 (event.controller as Function)();
 
-                expect(actionSpy).toHaveBeenCalledTimes(1); // But when the controller is called, it should proxy to the action
+                expect(actionSpy).toHaveBeenCalled(); // But when the controller is called, it should proxy to the action
             };
 
             it('should keep event.controller empty when no matching controller can be found', () => {
