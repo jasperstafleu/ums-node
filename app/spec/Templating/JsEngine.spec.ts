@@ -6,10 +6,10 @@ describe('JsEngine', () => {
         getContent: (fileName: string, encoding: string) => string;
 
     beforeEach(() => {
-        engine = new JsEngine(
-            (fileName) => fileExists(fileName),
-            (fileName, encoding) => getContent(fileName, encoding)
-        );
+        engine = new JsEngine({
+            existsSync: (fileName) => fileExists(fileName),
+            readFileSync: (fileName, encoding) => getContent(fileName, encoding)
+        });
         fileExists = () => true;
         getContent = () => '';
     });
@@ -37,7 +37,6 @@ describe('JsEngine', () => {
             getContent = (fn) => fn === fileName ? templ : '';
 
             expect(engine.render(fileName)).toBe(templ);
-
         });
 
         it('should render literals', () => {

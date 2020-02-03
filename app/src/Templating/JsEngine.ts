@@ -5,20 +5,22 @@ export default class JsEngine implements Engine
     private literalMatcher = new RegExp('\\${([^}]*)}', 'g');
 
     constructor(
-        protected fileExists: (fileName: string) => boolean,
-        protected getContent: (fileName: string, encoding: string) => string,
+        protected fs: {
+            existsSync: (fileName: string) => boolean,
+            readFileSync: (fileName: string, encoding: string) => string
+        }
     ) {
     }
 
     supports(name: string): boolean
     {
-        return name.substr(-6) === '.jstpl' && this.fileExists(name);
+        return name.substr(-6) === '.jstpl' && this.fs.existsSync(name);
     }
 
     render(name: string, parameters: {[key: string]: any} = {}): string
     {
-        const content = this
-            .getContent(name, 'utf8')
+        const content = this.fs
+            .readFileSync(name, 'utf8')
             .replace(this.literalMatcher, (loos, match) => {
                 return match in parameters ? `\${parameters.${match}}` : `\\\${${match}}`;
             })

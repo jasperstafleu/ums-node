@@ -17,7 +17,7 @@ describe('Container', () => {
     beforeEach(() => {
         fs = (fileName: string) => fileName;
         require = () => {};
-        container = new Container((fileName) => fs(fileName), (id) => require(id));
+        container = new Container((id) => require(id), {readFileSync: (fileName) => fs(fileName)});
     });
 
     describe('\b.get', () => {

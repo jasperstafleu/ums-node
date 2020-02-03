@@ -1,6 +1,6 @@
 import Container from "$stafleu/Dependency/Container";
 
-export const container = new Container(require('fs').readFileSync, require);
+export const container = new Container(require, require('fs'));
 
 container
     .loadConfigFromFile('config/services/core.json')

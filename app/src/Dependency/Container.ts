@@ -9,7 +9,7 @@ export default class Container
     private tagsToBeResolved: Function[]= [];
     private closed: boolean = false;
 
-    constructor (protected fs: (filename: string) => string, protected require: (id: string) => any)
+    constructor (protected require: (id: string) => any, protected fs: {readFileSync: (filename: string) => string})
     {
     }
 
@@ -74,7 +74,7 @@ export default class Container
 
     loadConfigFromFile(fileName: string): Container
     {
-        const config = JSON.parse(this.fs(fileName));
+        const config = JSON.parse(this.fs.readFileSync(fileName));
 
         for (let serviceName of Object.keys(config)) {
             if (!config[serviceName].class) {
@@ -106,9 +106,11 @@ export default class Container
                 }
 
                 try {
+                    // Try it as a constructor...
                     return new cls(...args);
                 } catch (e) {
-                    // Requirement is not a constructor; it should therefore be a factory (if arguments were supplied)
+                    // ... but catch the error if it is not;
+                    // it must therefore be either a factory (if arguments were supplied)
                     // or a module inclusion of a function
                     return Array.isArray(config[serviceName].arguments) ? cls(...args) : cls;
                 }
