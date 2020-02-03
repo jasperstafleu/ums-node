@@ -86,13 +86,13 @@ export default class Container
 
                 if (config[serviceName].class.includes('.')) {
                     let parts = config[serviceName].class.split('.');
-                    cls = this.require(parts.shift());
-                    for (let part = parts.shift(); part; part = parts.shift()) {
+                    let part = parts.shift();
+                    cls = this.require(part);
+                    while (part = parts.shift()) {
                         cls = cls[part];
                     }
                 } else {
                     cls = this.require(config[serviceName].class);
-
                     if (cls.default) {
                         cls = cls.default;
                     }
