@@ -1,6 +1,6 @@
 import TagResolver from "$stafleu/Dependency/TagResolver";
-import RecursiveDependencyInjection from "$stafleu/Exception/RecursiveDependencyInjection";
-import MissingTagName from "$stafleu/Exception/MissingTagName";
+import RecursiveDependencyInjection from "$stafleu/Error/RecursiveDependencyInjection";
+import MissingTagName from "$stafleu/Error/MissingTagName";
 
 export default class Container
 {
@@ -22,7 +22,7 @@ export default class Container
         if (typeof this.services[serviceName] == 'function') {
             // We are going to overwrite the service definition (a callback) by the service itself. This allows for
             // services to be cached / singletons. While resolving the service, resolving the same service another time
-            // means we hit an infinite recursion, which must raise an exception.
+            // means we hit an infinite recursion, which must raise an error.
             const definition = this.services[serviceName];
 
             this.services[serviceName] = () => {

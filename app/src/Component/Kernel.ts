@@ -1,9 +1,9 @@
 import {EventEmitter} from 'events';
 import {IncomingMessage, ServerResponse} from 'http';
 import HttpResponse from "$stafleu/Component/HttpResponse";
-import {ControllerEvent, ExceptionEvent, FinishRequestEvent, RequestEvent, ResponseEvent, TerminateEvent, ViewEvent} from "$stafleu/Event/Event/KernelEvent";
-import MissingController from "$stafleu/Exception/MissingController";
-import ControllerDoesNotReturnResponse from "$stafleu/Exception/ControllerDoesNotReturnResponse";
+import {ControllerEvent, ErrorEvent, FinishRequestEvent, RequestEvent, ResponseEvent, TerminateEvent, ViewEvent} from "$stafleu/Event/Event/KernelEvent";
+import MissingController from "$stafleu/Error/MissingController";
+import ControllerDoesNotReturnResponse from "$stafleu/Error/ControllerDoesNotReturnResponse";
 
 export default class Kernel
 {
@@ -78,8 +78,8 @@ export default class Kernel
 
     protected handleThrowable(e: Error, request: IncomingMessage): HttpResponse
     {
-        const event = new ExceptionEvent(request, e);
-        this.emitter.emit('kernel.exception', event);
+        const event = new ErrorEvent(request, e);
+        this.emitter.emit('kernel.error', event);
 
         const response = event.response || new HttpResponse(`${e.constructor.name} ${e.stack}`, 500);
 

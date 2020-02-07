@@ -8,7 +8,7 @@ export default class KernelEvent
 }
 
 export {default as ControllerEvent} from "$stafleu/Event/Event/ControllerEvent";
-export {default as ExceptionEvent} from "$stafleu/Event/Event/ExceptionEvent";
+export {default as ErrorEvent} from "$stafleu/Event/Event/ErrorEvent";
 export {default as FinishRequestEvent} from "$stafleu/Event/Event/FinishRequestEvent";
 export {default as RequestEvent} from "$stafleu/Event/Event/RequestEvent";
 export {default as ResponseEvent} from "$stafleu/Event/Event/ResponseEvent";

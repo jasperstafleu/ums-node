@@ -1,7 +1,7 @@
 import {IncomingMessage} from "http";
 import RequestEvent from "$stafleu/Event/Event/RequestEvent";
 
-export default class ExceptionEvent extends RequestEvent
+export default class ErrorEvent extends RequestEvent
 {
     constructor(request: IncomingMessage, readonly e: Error)
     {

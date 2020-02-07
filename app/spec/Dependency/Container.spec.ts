@@ -1,8 +1,8 @@
 import Container from "$stafleu/Dependency/Container";
-import RecursiveDependencyInjection from "$stafleu/Exception/RecursiveDependencyInjection";
+import RecursiveDependencyInjection from "$stafleu/Error/RecursiveDependencyInjection";
 import TagResolver from "$stafleu/Dependency/TagResolver";
 import {Mock} from "ts-mocks"
-import MissingTagName from "$stafleu/Exception/MissingTagName";
+import MissingTagName from "$stafleu/Error/MissingTagName";
 import Logger from "$stafleu/Logger/Logger";
 
 describe('Container', () => {
