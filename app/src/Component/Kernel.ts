@@ -1,7 +1,7 @@
 import {EventEmitter} from 'events';
 import {IncomingMessage, ServerResponse} from 'http';
 import HttpResponse from "$stafleu/Component/HttpResponse";
-import {ControllerEvent, FinishRequestEvent, RequestEvent, ResponseEvent, TerminateEvent, ViewEvent} from "$stafleu/Event/Event/KernelEvent";
+import {ControllerEvent, ExceptionEvent, FinishRequestEvent, RequestEvent, ResponseEvent, TerminateEvent, ViewEvent} from "$stafleu/Event/Event/KernelEvent";
 import MissingController from "$stafleu/Exception/MissingController";
 import ControllerDoesNotReturnResponse from "$stafleu/Exception/ControllerDoesNotReturnResponse";
 
@@ -78,10 +78,10 @@ export default class Kernel
 
     protected handleThrowable(e: Error, request: IncomingMessage): HttpResponse
     {
-        // TODO: Dispatch exception event
-        // TODO: Retrieve response from exception event and use it, immediatly going to finish request otherwise
-        // TODO: Determine response code corresponding to exception (if any)
-        let response = new HttpResponse(`${e.constructor.name} ${e.stack}`, 500);
+        const event = new ExceptionEvent(request, e);
+        this.emitter.emit('kernel.exception', event);
+
+        const response = event.response || new HttpResponse(`${e.constructor.name} ${e.stack}`, 500);
 
         try {
             return this.filterResponse(request, response);
