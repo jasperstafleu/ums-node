@@ -1,10 +1,10 @@
 import ParamConverter from "$stafleu/Component/ParamConverter";
-import {IncomingMessage} from "http";
 import RequestEvent from "$stafleu/Event/Event/RequestEvent";
+import HttpRequest from "$stafleu/Component/HttpRequest";
 
 export default class RequestConverter implements ParamConverter
 {
-    protected request: undefined | IncomingMessage;
+    protected request: undefined | HttpRequest;
 
     handleRequestEvent(event: RequestEvent): void
     {
@@ -16,7 +16,7 @@ export default class RequestConverter implements ParamConverter
         return name.substr(0, 7) === 'request';
     }
 
-    convert(name: string, value: string): { position: number; value: IncomingMessage }
+    convert(name: string, value: string): { position: number; value: HttpRequest }
     {
         if (!this.request) {
             throw new Error('Request is not available');

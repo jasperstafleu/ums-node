@@ -1,22 +1,22 @@
 import ViewEvent from "$stafleu/Event/Event/ViewEvent";
 import {Mock} from "ts-mocks";
-import {IncomingMessage} from "http";
 import StringResponseTransformer from "$stafleu/Event/Listener/View/StringResponseTransformer";
 import ViewResponseTransformer from "$stafleu/Event/Listener/View/ViewResponseTransformer";
 import Engine from "$stafleu/Templating/Engine";
 import HttpResponse from "$stafleu/Component/HttpResponse";
 import View from "$stafleu/Component/View";
+import HttpRequest from "$stafleu/Component/HttpRequest";
 
 describe('ViewResponseTransformer', () => {
     describe('\b.transform', () => {
         let transformer: StringResponseTransformer,
             templateEngine: Mock<Engine>,
-            request: Mock<IncomingMessage>;
+            request: Mock<HttpRequest>;
 
         beforeEach(() => {
             templateEngine = new Mock<Engine>({render: () => ''});
             transformer = new ViewResponseTransformer(templateEngine.Object);
-            request = new Mock<IncomingMessage>();
+            request = new Mock<HttpRequest>();
         });
 
         it('should ignore non-view results', () => {

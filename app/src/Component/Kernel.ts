@@ -1,9 +1,10 @@
 import {EventEmitter} from 'events';
-import {IncomingMessage, ServerResponse} from 'http';
+import {ServerResponse} from 'http';
 import HttpResponse from "$stafleu/Component/HttpResponse";
 import {ControllerEvent, ErrorEvent, FinishRequestEvent, RequestEvent, ResponseEvent, TerminateEvent, ViewEvent} from "$stafleu/Event/Event/KernelEvent";
 import MissingController from "$stafleu/Error/MissingController";
 import ControllerDoesNotReturnResponse from "$stafleu/Error/ControllerDoesNotReturnResponse";
+import HttpRequest from "$stafleu/Component/HttpRequest";
 
 export default class Kernel
 {
@@ -11,7 +12,7 @@ export default class Kernel
     {
     }
 
-    handle(request: IncomingMessage, response: ServerResponse): void
+    handle(request: HttpRequest, response: ServerResponse): void
     {
         let httpResponse;
 
@@ -30,7 +31,7 @@ export default class Kernel
         this.emitter.emit('kernel.terminate', new TerminateEvent(request, httpResponse));
     }
 
-    protected handleRaw(request: IncomingMessage): HttpResponse
+    protected handleRaw(request: HttpRequest): HttpResponse
     {
         const requestEvent = new RequestEvent(request);
         this.emitter.emit('kernel.request', requestEvent);
@@ -61,7 +62,7 @@ export default class Kernel
         throw new ControllerDoesNotReturnResponse();
     }
 
-    protected filterResponse(request: IncomingMessage, response: HttpResponse): HttpResponse
+    protected filterResponse(request: HttpRequest, response: HttpResponse): HttpResponse
     {
         const event = new ResponseEvent(request, response);
 
@@ -71,12 +72,12 @@ export default class Kernel
         return event.response;
     }
 
-    protected finishRequest(request: IncomingMessage): void
+    protected finishRequest(request: HttpRequest): void
     {
         this.emitter.emit('kernel.finish_request', new FinishRequestEvent(request));
     }
 
-    protected handleThrowable(e: Error, request: IncomingMessage): HttpResponse
+    protected handleThrowable(e: Error, request: HttpRequest): HttpResponse
     {
         const event = new ErrorEvent(request, e);
         this.emitter.emit('kernel.error', event);

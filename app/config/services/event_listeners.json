@@ -47,5 +47,32 @@
         "method": "transform"
       }
     ]
+  },
+  "session.bag": {
+    "class": "$stafleu/Session/Bag/InMemory"
+  },
+  "event.listener_session": {
+    "class": "$stafleu/Session/SessionListener",
+    "arguments": [
+      "@session.bag",
+      "UMS-SESS-ID"
+    ],
+    "tags": [
+      {
+        "name": "kernel.event_listener",
+        "event": "kernel.request",
+        "method": "setSessionIdFromHeader"
+      },
+      {
+        "name": "kernel.event_listener",
+        "event": "kernel.response",
+        "method": "addSessionCookie"
+      },
+      {
+        "name": "kernel.event_listener",
+        "event": "kernel.finish_request",
+        "method": "resetSessionId"
+      }
+    ]
   }
 }

@@ -1,9 +1,9 @@
 import RequestEvent from "$stafleu/Event/Event/RequestEvent";
-import {IncomingMessage} from "http";
+import HttpRequest from "$stafleu/Component/HttpRequest";
 
 export default class ViewEvent extends RequestEvent
 {
-    constructor(request: IncomingMessage, readonly controllerResult: any)
+    constructor(request: HttpRequest, readonly controllerResult: any)
     {
         super(request);
     }

@@ -1,10 +1,10 @@
 import ControllerResolver from "$stafleu/Event/Listener/Controller/ControllerResolver";
 import ControllerEvent from "$stafleu/Event/Event/ControllerEvent";
 import {Mock} from "ts-mocks";
-import {IncomingMessage} from "http";
 import Controller from "$stafleu/Controller/Controller";
 import Spy = jasmine.Spy;
 import ParamConverter from "$stafleu/Component/ParamConverter";
+import HttpRequest from "$stafleu/Component/HttpRequest";
 
 describe('ControllerResolver', () => {
     let resolver: ControllerResolver;
@@ -14,7 +14,7 @@ describe('ControllerResolver', () => {
     });
 
     describe('\b.handle', () => {
-        let request: Mock<IncomingMessage>,
+        let request: Mock<HttpRequest>,
             event: ControllerEvent,
             route: string,
             controller: Mock<Controller>,
@@ -22,7 +22,7 @@ describe('ControllerResolver', () => {
             actionSpy: Spy;
 
         beforeEach(() => {
-            request = new Mock<IncomingMessage>();
+            request = new Mock<HttpRequest>();
             event = new ControllerEvent(request.Object);
             action = Math.random().toString(36);
             actionSpy = jasmine.createSpy('action');
@@ -35,7 +35,7 @@ describe('ControllerResolver', () => {
 
         describe('action resolution', () => {
             beforeEach(() => {
-                request.Object.url = route;
+                request.extend({url: route});
             });
 
             const assertCorrectController = () => {
@@ -108,7 +108,8 @@ describe('ControllerResolver', () => {
                         resolvedArguments = args;
                     });
 
-                    request.Object.url = Math.random().toString(36);
+                    request.extend({url: Math.random().toString(36)});
+
                     resolver.addController(route, controller.Object, action, defaults);
                     resolver.handle(event);
                     (event.controller as Function)();

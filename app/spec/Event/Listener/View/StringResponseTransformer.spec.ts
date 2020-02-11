@@ -1,17 +1,17 @@
 import ViewEvent from "$stafleu/Event/Event/ViewEvent";
 import {Mock} from "ts-mocks";
-import {IncomingMessage} from "http";
 import StringResponseTransformer from "$stafleu/Event/Listener/View/StringResponseTransformer";
 import HttpResponse from "$stafleu/Component/HttpResponse";
+import HttpRequest from "$stafleu/Component/HttpRequest";
 
 describe('StringResponseTransformer', () => {
     describe('\b.transform', () => {
         let transformer: StringResponseTransformer,
-            request: Mock<IncomingMessage>;
+            request: Mock<HttpRequest>;
 
         beforeEach(() => {
             transformer = new StringResponseTransformer();
-            request = new Mock<IncomingMessage>();
+            request = new Mock<HttpRequest>();
         });
 
         it('should ignore non-string results', () => {

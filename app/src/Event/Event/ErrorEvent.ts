@@ -1,9 +1,9 @@
-import {IncomingMessage} from "http";
 import RequestEvent from "$stafleu/Event/Event/RequestEvent";
+import HttpRequest from "$stafleu/Component/HttpRequest";
 
 export default class ErrorEvent extends RequestEvent
 {
-    constructor(request: IncomingMessage, readonly e: Error)
+    constructor(request: HttpRequest, readonly e: Error)
     {
         super(request);
     }

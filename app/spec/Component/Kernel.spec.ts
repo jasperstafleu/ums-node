@@ -1,19 +1,20 @@
 import {EventEmitter} from 'events';
-import {IncomingMessage, ServerResponse} from "http";
+import {ServerResponse} from "http";
 import Kernel from "$stafleu/Component/Kernel";
 import {Mock} from "ts-mocks";
 import HttpResponse from "$stafleu/Component/HttpResponse";
 import {default as KernelEvent, ControllerEvent, ErrorEvent, FinishRequestEvent, RequestEvent, ResponseEvent, TerminateEvent, ViewEvent} from "$stafleu/Event/Event/KernelEvent";
+import HttpRequest from "$stafleu/Component/HttpRequest";
 
 describe('Kernel.handle', () => {
     let kernel: Kernel,
         emitter: Mock<EventEmitter>,
-        request: Mock<IncomingMessage>,
+        request: Mock<HttpRequest>,
         response: Mock<ServerResponse>;
 
     beforeEach(() => {
         emitter = new Mock<EventEmitter>();
-        request = new Mock<IncomingMessage>();
+        request = new Mock<HttpRequest>();
         response = new Mock<ServerResponse>({
             setHeader(): void {}
         });

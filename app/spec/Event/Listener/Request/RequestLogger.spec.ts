@@ -2,7 +2,7 @@ import RequestLogger from "$stafleu/Event/Listener/Request/RequestLogger";
 import Logger from "$stafleu/Logger/Logger";
 import {Mock} from "ts-mocks";
 import RequestEvent from "$stafleu/Event/Event/RequestEvent";
-import {IncomingMessage} from "http";
+import HttpRequest from "$stafleu/Component/HttpRequest";
 
 describe('RequestLogger', () => {
     let logger: Mock<Logger>,
@@ -14,11 +14,11 @@ describe('RequestLogger', () => {
     });
 
     describe('\b.handle', () => {
-        let request: Mock<IncomingMessage>,
+        let request: Mock<HttpRequest>,
             event: Mock<RequestEvent>;
 
         beforeEach(() => {
-            request = new Mock<IncomingMessage>();
+            request = new Mock<HttpRequest>();
             event = new Mock<RequestEvent>();
         });
 

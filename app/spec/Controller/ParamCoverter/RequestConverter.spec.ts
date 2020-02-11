@@ -1,7 +1,7 @@
 import RequestEvent from "$stafleu/Event/Event/RequestEvent";
 import {Mock} from "ts-mocks";
-import {IncomingMessage} from "http";
 import RequestConverter from "$stafleu/Controller/ParamCoverter/RequestConverter";
+import HttpRequest from "$stafleu/Component/HttpRequest";
 
 describe('RequestConverter', () => {
     let converter: any;
@@ -21,7 +21,7 @@ describe('RequestConverter', () => {
     });
 
     it('should convert correct positions with value request', () => {
-        const request = new Mock<IncomingMessage>(),
+        const request = new Mock<HttpRequest>(),
             event = new RequestEvent(request.Object),
             position = Math.round(Math.random() * 100);
 

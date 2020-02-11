@@ -1,7 +1,7 @@
-import {IncomingMessage} from "http";
 import ParamConverter from "$stafleu/Component/ParamConverter";
 import Controller from "$stafleu/Controller/Controller";
 import ControllerEvent from "$stafleu/Event/Event/ControllerEvent";
+import HttpRequest from "$stafleu/Component/HttpRequest";
 
 class ControllerReference
 {
@@ -42,7 +42,7 @@ export default class ControllerResolver
         }
     }
 
-    protected getController(request: IncomingMessage): undefined | ControllerReference
+    protected getController(request: HttpRequest): undefined | ControllerReference
     {
         let match, routeDefinition;
 

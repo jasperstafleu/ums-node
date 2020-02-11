@@ -1,1 +1,8 @@
-Hello ${name} at ${url}
+<h1>Hello ${name} at ${url}</h1>
+
+<dl>
+<dt>Previous value</dt>
+<dd>${previous}</dd>
+<dt>Next value</dt>
+<dd>${next}</dd>
+</dl>

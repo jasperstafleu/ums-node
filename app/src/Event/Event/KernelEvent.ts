@@ -1,8 +1,8 @@
-import {IncomingMessage} from "http";
+import HttpRequest from "$stafleu/Component/HttpRequest";
 
 export default class KernelEvent
 {
-    constructor(readonly request: IncomingMessage)
+    constructor(readonly request: HttpRequest)
     {
     }
 }
