@@ -27,6 +27,8 @@ export default class JsEngine implements Engine
         ;
 
         // TODO: Probably should do something to prevent unwanted injection here...
+        // But I'm not going to; if you ever need this in production, use a real templating engine
+        // Or leave me a bug report; I _might_ look into it if people actually start using this.
         return eval('`'+content+'`');
     }
 }
