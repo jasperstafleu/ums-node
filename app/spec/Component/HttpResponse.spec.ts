@@ -1,25 +1,37 @@
 import HttpResponse from "$stafleu/Component/HttpResponse";
 
-describe('Constructor', () => {
-    it('should have default arguments', () => {
-        const response = new HttpResponse();
+describe('HttpResponse', () => {
+    let response: HttpResponse;
 
-        expect(response.content).toBe('');
-        expect(response.httpCode).toBe(200);
-        expect(response.headers).toEqual({"Content-Type": "text/plain"});
+    beforeEach(() => {
+        response = new HttpResponse();
     });
 
-    it('should resolve non-default arguments correctly', () => {
-        const content = Math.random().toString(),
-            httpCode = Math.random(),
-            headers = {"test": Math.random().toString()}
-        ;
+    describe('\b.addHeader', () => {
+        let header = Math.random().toString(36),
+            value = Math.random().toString(36);
 
-        const response = new HttpResponse(content, httpCode, headers);
+        it('should set the header as string if no header existed', () => {
+            response.addHeader(header, value);
 
-        expect(response.content).toBe(content);
-        expect(response.httpCode).toBe(httpCode);
-        expect(response.headers).toEqual(headers);
+            expect(response.headers[header]).toBe(value);
+        });
+
+        it('should transform the header to an array containing both values if it was a string', () => {
+            const existing = Math.random().toString(36);
+
+            response.headers[header] = existing;
+            response.addHeader(header, value);
+            expect(response.headers[header]).toEqual([existing, value]);
+        });
+
+        it('should add the new header to the array if no header existed', () => {
+            const existing1 = Math.random().toString(36),
+                existing2 = Math.random().toString(36);
+
+            response.headers[header] = [existing1, existing2];
+            response.addHeader(header, value);
+            expect(response.headers[header]).toEqual([existing1, existing2, value]);
+        });
     });
-
 });

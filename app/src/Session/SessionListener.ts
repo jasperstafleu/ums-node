@@ -24,12 +24,13 @@ export default class SessionListener
             return;
         }
 
-        const expire = new Date();
-        expire.setSeconds(expire.getSeconds() + this.sessionTtl);
+        let cookieValue = `${this.sessionName}=${this.bag.getId()}; HttpOnly`;
+        if (this.sessionTtl > 0) {
+            cookieValue += `; Max-Age=${this.sessionTtl}`;
+        }
 
         // TODO: If HTTPS: "Secure"
-        // TODO: Make sure this does not conflict with other cookie setters. This should probably be fixed in the HttpResponse object...
-        event.response.headers['Set-Cookie'] = `${this.sessionName}=${this.bag.getId()}; HttpOnly; Expires=${expire.toUTCString()}`;
+        event.response.addHeader('Set-Cookie', cookieValue);
     }
 
     resetSessionId()

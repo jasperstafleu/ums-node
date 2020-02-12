@@ -62,7 +62,8 @@ describe('SessionListener', () => {
         beforeEach(() => {
             request = new Mock<HttpRequest>();
             response = new Mock<HttpResponse>({
-                headers: {}
+                headers: {},
+                addHeader() { return response.Object; }
             });
             event = new Mock<ResponseEvent>({
                 request: request.Object,
@@ -77,6 +78,7 @@ describe('SessionListener', () => {
 
             listener.addSessionCookie(event.Object);
 
+            expect(response.Object.addHeader).not.toHaveBeenCalled();
             expect(response.Object.headers['Set-Cookie']).toBeUndefined();
         });
 
@@ -112,15 +114,39 @@ describe('SessionListener', () => {
 
             listener.addSessionCookie(event.Object);
 
-            const setCookie = response.Object.headers['Set-Cookie'];
-            expect(setCookie).toMatch(new RegExp(`\^${sessionName}=${sessionId}`));
-            expect(setCookie).toContain('HttpOnly');
-            expect(setCookie).toContain('Expires=');
+            expect(response.Object.addHeader).toHaveBeenCalledWith('Set-Cookie', {
+                asymmetricMatch(actual: string) {
+                    expect(actual).toMatch(new RegExp(`\^${sessionName}=${sessionId}`));
+                    expect(actual).toContain('HttpOnly');
+                    expect(actual).toContain('Max-Age='+sessionTtl);
 
-            const expectedExpiry = ((new Date).getTime() / 1000) + sessionTtl,
-                actualExpiry = (new Date((setCookie.toString().match(/(?<=Expires=).+?(?=;|$)/) || '').toString())).getTime() / 1000;
-            expect(expectedExpiry - actualExpiry).toBeLessThan(10);         // Up to 10 second difference between
-            expect(expectedExpiry - actualExpiry).toBeGreaterThan(-10);     // expected and actual is accepted
+                    return true;
+                }
+            });
+        });
+
+        it('should not include Max-Age or Expires if sessionTtl <= 0', () => {
+            const sessionId = Math.random().toString(36);
+
+            listener = new SessionListener(bag.Object, sessionName, 0);
+
+            bag.extend({
+                exists() { return true; },
+                getId() { return sessionId; }
+            });
+
+            listener.addSessionCookie(event.Object);
+
+            expect(response.Object.addHeader).toHaveBeenCalledWith('Set-Cookie', {
+                asymmetricMatch(actual: string) {
+                    expect(actual).toMatch(new RegExp(`\^${sessionName}=${sessionId}`));
+                    expect(actual).toContain('HttpOnly');
+                    expect(actual).not.toContain('Max-Age=');
+                    expect(actual).not.toContain('Expires=');
+
+                    return true;
+                }
+            });
         });
     });
 
