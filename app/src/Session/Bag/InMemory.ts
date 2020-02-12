@@ -7,10 +7,15 @@ export default class InMemory implements SessionBag
 
     protected generateSession(): string
     {
-        const generator = () => Math.floor(Math.random() * Number.MAX_SAFE_INTEGER).toString(36);
+        const generator = () => {
+            // Generate a long enough pseudo random number as sessionId.
+            return Math.floor(Math.random() * Number.MAX_SAFE_INTEGER).toString(36)
+                + Math.floor(Math.random() * Number.MAX_SAFE_INTEGER).toString(36)
+                + Math.floor(Math.random() * Number.MAX_SAFE_INTEGER).toString(36);
+        };
 
-        let id, it;
-        for (id = generator(), it = 0; id in this.values; this.id = generator(), it++) {
+        let id: string, it: number;
+        for (id = generator(), it = 0; id in this.values; id = generator(), it++) {
             // prevent eternal loops.
             if (it > 1e3) {
                 throw new Error('Too many attempts needed to generate session ID, aborting');

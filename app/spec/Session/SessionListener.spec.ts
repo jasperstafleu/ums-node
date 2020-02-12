@@ -70,15 +70,35 @@ describe('SessionListener', () => {
             });
         });
 
-        it('should not add sessionId cookie if the bag has not changed', () => {
+        it('should not add sessionId cookie if the bag does not exist', () => {
             bag.extend({
                 exists() { return false; },
-                getId() { return ''; }
             });
 
             listener.addSessionCookie(event.Object);
 
-            expect(bag.Object.getId).not.toHaveBeenCalled();
+            expect(response.Object.headers['Set-Cookie']).toBeUndefined();
+        });
+
+        it('should not add sessionId cookie if the sessionId is equal to the received one', () => {
+            const reqEvent = new Mock<RequestEvent>({
+                    request: request.Object
+                }),
+                sessId = Math.random().toString(36);
+
+            bag.extend({
+                exists() { return true; },
+                getId() { return sessId; },
+                setId() { }
+            });
+
+            request.extend({
+                getCookie() { return sessId; }
+            });
+
+            listener.setSessionIdFromHeader(reqEvent.Object);
+            listener.addSessionCookie(event.Object);
+
             expect(response.Object.headers['Set-Cookie']).toBeUndefined();
         });
 

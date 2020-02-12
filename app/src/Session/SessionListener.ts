@@ -3,22 +3,24 @@ import SessionBag from "$stafleu/Session/Bag/SessionBag";
 
 export default class SessionListener
 {
+    private sessionId: string | undefined;
+
     constructor(protected bag: SessionBag, readonly sessionName: string, protected sessionTtl: number = 30*60)
     {
     }
 
     setSessionIdFromHeader(event: RequestEvent): void
     {
-        const sessionId = event.request.getCookie(this.sessionName);
-        if (sessionId) {
-            this.bag.setId(sessionId);
+        this.sessionId = event.request.getCookie(this.sessionName);
+        if (this.sessionId) {
+            this.bag.setId(this.sessionId);
         }
     }
 
     addSessionCookie(event: ResponseEvent): void
     {
         // No response determined or session cookie has already been set? Do nothing.
-        if (!this.bag.exists()) {
+        if (!this.bag.exists() || this.bag.getId() === this.sessionId) {
             return;
         }
 
@@ -33,6 +35,10 @@ export default class SessionListener
     resetSessionId()
     {
         this.bag.reset();
+
+        // Not sure whether the code below is needed (that is: I can't figure out what goes wrong if I
+        // don't do it, thus I can't write test code for it), but it feels right, so I added it.
+        this.sessionId = undefined;
     }
 }
 

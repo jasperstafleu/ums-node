@@ -186,7 +186,7 @@ describe('InMemory', () => {
     it('should generate unique ids', () => {
         const ids: {[key: string]: number} = {};
 
-        for (let it = 1e6; it >= 0; --it) {
+        for (let it = 1e5; it >= 0; --it) {
             bag.set('key', it);
             expect(ids[bag.getId()]).toBeUndefined();
 
