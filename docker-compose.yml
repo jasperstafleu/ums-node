@@ -1,15 +1,25 @@
-version: "2"
+version: "3.1"
 services:
-  ums_node:
+  node:
     image: "node:13"
     working_dir: /home/node/app
     environment:
       - UMS_SERVER_PORT=3010  # Keep equal to second part of ports variable in this file
     env_file:
-      - ./docker.env
+      - ./env/db.env
+      - ./env/node.env
     volumes:
       - ./app:/home/node/app
       - ./dist:/home/node/dist
     ports:
       - "9000:3010"
     command: "npm run start"
+
+  db:
+    image: postgres
+    ports:
+      - "9001:5432"
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+    env_file:
+      - ./env/db.env
