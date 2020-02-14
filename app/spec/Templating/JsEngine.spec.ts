@@ -49,23 +49,13 @@ describe('JsEngine', () => {
             expect(engine.render(fileName, {lit: literal})).toBe('success: '+literal);
         });
 
-        it('should not render literals that were not passed in parameters', () => {
+        it('should throw if literals are used that were not passed in parameters', () => {
             const fileName = Math.random().toString(36) + '.jstpl',
                 templLiteral = 'success: ${lit}';
 
             getContent = (fn) => fn === fileName ? templLiteral : '';
 
-            expect(engine.render(fileName)).toBe(templLiteral);
-        });
-
-        it('should allow mixing literals to be rendered and non-literals', () => {
-            const fileName = Math.random().toString(36) + '.jstpl',
-                literal = Math.random(),
-                templLiteral = 'success: ${non-lit} ${lit}';
-
-            getContent = (fn) => fn === fileName ? templLiteral : '';
-
-            expect(engine.render(fileName, {lit: literal})).toBe('success: ${non-lit} '+literal);
+            expect(() => engine.render(fileName)).toThrow();
         });
     });
 });
