@@ -9,7 +9,7 @@ export default class ControllerTagResolver implements TagResolver
     {
     }
 
-    resolve(container: Container, serviceName: string, tag: any): void
+    resolve(container: Container, serviceName: string, tag: {[key: string]: any}): void
     {
         if (!('action' in tag && 'route' in tag)) {
             this.logger.notice(`Tag '${tag.name}' on '${serviceName}' ignored due to lack of 'action' or 'route' key.`);

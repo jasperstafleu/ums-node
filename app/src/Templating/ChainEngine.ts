@@ -20,7 +20,7 @@ export default class ChainEngine implements Engine
         return false;
     }
 
-    render(name: string, parameters: { [p: string]: any} = {}): string
+    render(name: string, parameters: {[key: string]: any} = {}): string
     {
         for (let it = this.engines.length - 1; it >= 0; --it) {
             if (this.engines[it].supports(name)) {

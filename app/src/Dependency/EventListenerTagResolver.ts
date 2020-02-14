@@ -9,7 +9,7 @@ export default class EventListenerTagResolver implements TagResolver
     {
     }
 
-    resolve(container: Container, serviceName: string, tag: any): void
+    resolve(container: Container, serviceName: string, tag: {[key: string]: any}): void
     {
         if (!('event' in tag && 'method' in tag)) {
             this.logger.notice(`Tag '${tag.name}' on '${serviceName}' ignored due to lack of 'event' or 'method' key.`);

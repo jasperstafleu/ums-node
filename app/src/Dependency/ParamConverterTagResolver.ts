@@ -4,7 +4,7 @@ import ControllerResolver from "$stafleu/Event/Listener/Controller/ControllerRes
 
 export default class ParamConverterTagResolver implements TagResolver
 {
-    resolve(container: Container, serviceName: string, tag: any): void
+    resolve(container: Container, serviceName: string, tag: {[key: string]: any}): void
     {
         container.decorate('event.controller_resolver', (resolver: ControllerResolver): void => {
             resolver.addParamConverter(container.get(serviceName));

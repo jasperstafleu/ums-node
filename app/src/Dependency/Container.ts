@@ -44,7 +44,7 @@ export default class Container
         const serviceDefinition = this.services[serviceName];
 
         // Defer actual decoration until the get method is called.
-        this.services[serviceName] = (): any => {
+        this.services[serviceName] = () => {
             const service = serviceDefinition.call(serviceName);
 
             decorator(service);
@@ -124,7 +124,7 @@ export default class Container
         return this;
     }
 
-    protected resolveTags(serviceName: string, tags: any[])
+    protected resolveTags(serviceName: string, tags: {[key: string]: any}[])
     {
         for (let it = 0, len = tags.length; it < len; ++it) {
             let tag = tags[it];
