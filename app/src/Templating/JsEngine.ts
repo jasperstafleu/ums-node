@@ -20,7 +20,6 @@ export default class JsEngine implements Engine
         // TODO: Probably should do something to prevent unwanted injection here...
         // But I'm not going to; if you ever need this in production, use a real templating engine
         // Or leave me a bug report; I _might_ look into it if people actually start using this.
-        // return eval('with (parameters) {`'+content+'`}');
         return (new Function('args', `with (args) { return \`${this.fs.readFileSync(name, 'utf8')}\`; }`))(parameters);
     }
 }
