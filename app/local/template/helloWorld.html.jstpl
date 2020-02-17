@@ -1,6 +1,15 @@
 <h1>Hello ${name} at ${url}</h1>
 
-Values:
+<p>
+<h2>Values</h2>
 <ul>
 ${values.map(value => `<li>${value}</li>`).join('\n')}
 </ul>
+</p>
+
+<p>
+<h2>Users</h2>
+<ul>
+${users.map(value => `<li>${value.name}</li>`).join('\n')}
+</ul>
+</p>

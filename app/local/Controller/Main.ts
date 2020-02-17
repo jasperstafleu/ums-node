@@ -2,10 +2,11 @@ import Controller from "$stafleu/Controller/Controller";
 import View from "$stafleu/Component/View";
 import HttpRequest from "$stafleu/Component/HttpRequest";
 import SessionBag from "$stafleu/Session/Bag/SessionBag";
+import UserRepository from "$stafleu_local/Database/UserRepository";
 
 export default class Main implements Controller
 {
-    constructor(protected bag: SessionBag)
+    constructor(protected bag: SessionBag, protected userRepository: UserRepository)
     {
     }
 
@@ -19,7 +20,8 @@ export default class Main implements Controller
         return new View('local/template/helloWorld.html.jstpl', {
             name: name,
             url: request.url,
-            values: values
+            values: values,
+            users: this.userRepository.findAll()
         });
     }
 }
