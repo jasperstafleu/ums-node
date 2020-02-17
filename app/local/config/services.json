@@ -26,8 +26,10 @@
     ]
   },
   "repository.user": {
-    "class": "$stafleu_local/Database/UserRepository",
+    "class": "$stafleu/Database/EntityRepository",
     "arguments": [
+      "@type:$stafleu_local/Models/User",
+      "users",
       "@query_executor"
     ]
   }

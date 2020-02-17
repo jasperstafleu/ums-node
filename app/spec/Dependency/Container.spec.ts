@@ -209,7 +209,7 @@ describe('Container', () => {
             require = (id) => {
                 expect(id).toBe(requiredClass);
 
-                return (arg0: any, arg1: any) => new TestClass(arg0, arg1);
+                return TestClass;
             };
 
             container.loadConfigFromFile(fileName);
@@ -238,7 +238,6 @@ describe('Container', () => {
 
         it('should resolve "fields" as fields to be set to the resulting object', () => {
             const fileName = Math.random().toString(),
-
                 serviceDefinition = {test1: {class: "", fields: {t: Math.random()}}}
             ;
 
@@ -280,9 +279,7 @@ describe('Container', () => {
             ;
 
             fs = (fn) => JSON.stringify(fn === fileName ? serviceDefinition : {});
-            require = (id) => {
-                return (arg0: any, arg1: any) => new TestClass(arg0, arg1);
-            };
+            require = (id) => TestClass;
 
             container.loadConfigFromFile(fileName);
             const service = container.get('test1');
@@ -291,6 +288,24 @@ describe('Container', () => {
             expect(service.arg0.t2).toBe(container.get('test2')); // Deep service definition
             expect(service.arg1.t3).toBe(process.env.PWD); // Deep env definition
             expect(service.arg0.t2.t.t).toBe(process.env.PWD); // Very deep env definition
+        });
+
+        it('should resolve @type: as the constructor of the rest of the string', () => {
+            // pending('Not sure how to implement this test. From hand-testing I know it works');
+            const fileName = Math.random().toString(),
+                serviceDefinition = {
+                    test1: {class: "t", arguments: ["@type:t"]}
+                }
+            ;
+
+            fs = (fn) => JSON.stringify(fn === fileName ? serviceDefinition : {});
+            require = (id) => {
+                return id === 't' ? TestClass : undefined;
+            };
+
+            container.loadConfigFromFile(fileName);
+            const service = container.get('test1');
+            expect(service.arg0).toEqual(TestClass.constructor);
         });
     });
 

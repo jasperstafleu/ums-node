@@ -2,11 +2,12 @@ import Controller from "$stafleu/Controller/Controller";
 import View from "$stafleu/Component/View";
 import HttpRequest from "$stafleu/Component/HttpRequest";
 import SessionBag from "$stafleu/Session/Bag/SessionBag";
-import UserRepository from "$stafleu_local/Database/UserRepository";
+import EntityRepository from "$stafleu/Database/EntityRepository";
+import User from "$stafleu_local/Models/User";
 
 export default class Main implements Controller
 {
-    constructor(protected bag: SessionBag, protected userRepository: UserRepository)
+    constructor(protected bag: SessionBag, protected userRepository: EntityRepository<User>)
     {
     }
 

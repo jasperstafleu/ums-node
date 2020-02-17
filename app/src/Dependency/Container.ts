@@ -156,7 +156,9 @@ export default class Container
         let ret: any = key;
 
         if (typeof key === 'string' && key.charAt(0) === '@') {
-            if (key.substring(0, 5) === '@env.') {
+            if (key.substring(0, 6) === '@type:') {
+                ret = this.require(key.substring(6)).constructor;
+            } else if (key.substring(0, 5) === '@env.') {
                 ret = process.env[key.substring(5)];
             } else {
                 ret = this.get(key.substring(1));
