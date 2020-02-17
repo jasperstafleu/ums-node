@@ -26,6 +26,9 @@
     ]
   },
   "repository.user": {
-    "class": "$stafleu_local/Database/UserRepository"
+    "class": "$stafleu_local/Database/UserRepository",
+    "arguments": [
+      "@query_executor"
+    ]
   }
 }

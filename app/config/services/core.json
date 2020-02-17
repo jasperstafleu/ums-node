@@ -23,6 +23,8 @@
       "@logger"
     ]
   },
+
+
   "templating": {
     "class": "$stafleu/Templating/ChainEngine"
   },
@@ -38,6 +40,8 @@
       { "name":  "templating.engine" }
     ]
   },
+
+
   "param_converter.tag_resolver": {
     "class": "$stafleu/Dependency/ParamConverterTagResolver"
   },
@@ -55,6 +59,25 @@
         "name": "kernel.event_listener",
         "event": "kernel.request",
         "method": "handleRequestEvent"
+      }
+    ]
+  },
+
+
+  "query_executor": {
+    "class": "$stafleu/Database/PgQueryExecutor",
+    "arguments": [
+      "@query_executor.pg_pool"
+    ]
+  },
+  "query_executor.pg_pool": {
+    "class": "pg.Pool",
+    "arguments": [
+      {
+        "user": "@env.POSTGRES_USER",
+        "host": "@env.POSTGRES_HOST",
+        "database": "@env.POSTGRES_DB",
+        "password": "@env.POSTGRES_PASSWORD"
       }
     ]
   }

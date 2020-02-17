@@ -10,6 +10,6 @@ ${values.map(value => `<li>${value}</li>`).join('\n')}
 <p>
 <h2>Users</h2>
 <ul>
-${users.map(value => `<li>${value.name}</li>`).join('\n')}
+${users.map(value => `<li>${value.id}: ${value.name}</li>`).join('\n')}
 </ul>
 </p>

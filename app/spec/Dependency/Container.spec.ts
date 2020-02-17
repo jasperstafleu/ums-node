@@ -219,6 +219,79 @@ describe('Container', () => {
             expect(service.arg0).toBe(serviceDefinition.test1.arguments[0]);
             expect(service.arg1).toBe(serviceDefinition.test1.arguments[1]);
         });
+
+        it('should resolve empty class name to vanilla object', () => {
+            const fileName = Math.random().toString(),
+                serviceDefinition = {test1: {class: ""}}
+            ;
+
+            fs = (fn) => JSON.stringify(fn === fileName ? serviceDefinition : {});
+            require = () => {
+                throw Error('Require should not have been called');
+            };
+
+            container.loadConfigFromFile(fileName);
+            const service = container.get('test1');
+
+            expect(typeof service).toBe('object');
+        });
+
+        it('should resolve "fields" as fields to be set to the resulting object', () => {
+            const fileName = Math.random().toString(),
+
+                serviceDefinition = {test1: {class: "", fields: {t: Math.random()}}}
+            ;
+
+            fs = (fn) => JSON.stringify(fn === fileName ? serviceDefinition : {});
+            require = () => {
+                throw Error('Require should not have been called');
+            };
+
+            container.loadConfigFromFile(fileName);
+            const service = container.get('test1');
+
+            expect(typeof service).toBe('object');
+            expect(service.t).toBe(serviceDefinition.test1.fields.t);
+        });
+
+        it('should resolve fields starting @env from the environment', () => {
+            const fileName = Math.random().toString(),
+                serviceDefinition = {test1: {class: "", fields: {t: "@env.PWD"}}}
+            ;
+
+            fs = (fn) => JSON.stringify(fn === fileName ? serviceDefinition : {});
+            require = () => {
+                throw Error('Require should not have been called');
+            };
+
+            container.loadConfigFromFile(fileName);
+            const service = container.get('test1');
+
+            expect(typeof service).toBe('object');
+            expect(service.t).toBe(process.env.PWD);
+        });
+
+        it('should resolve complex arguments (ie: nested objects with @env. or @service in the values)', () => {
+            const fileName = Math.random().toString(),
+                serviceDefinition = {
+                    test1: {class: "t", arguments: [{t2: "@test2"}, {t3: "@env.PWD"}]},
+                    test2: {class: "", fields: {t: {t: "@env.PWD"}}}
+                }
+            ;
+
+            fs = (fn) => JSON.stringify(fn === fileName ? serviceDefinition : {});
+            require = (id) => {
+                return (arg0: any, arg1: any) => new TestClass(arg0, arg1);
+            };
+
+            container.loadConfigFromFile(fileName);
+            const service = container.get('test1');
+
+            expect(service).toBeInstanceOf(TestClass);
+            expect(service.arg0.t2).toBe(container.get('test2')); // Deep service definition
+            expect(service.arg1.t3).toBe(process.env.PWD); // Deep env definition
+            expect(service.arg0.t2.t.t).toBe(process.env.PWD); // Very deep env definition
+        });
     });
 
     describe('\b.close', () => {
