@@ -9,14 +9,16 @@ describe('SessionListener', () => {
     let listener: SessionListener,
         bag: Mock<SessionBag>,
         sessionName: string,
-        sessionTtl: number
+        sessionTtl: number,
+        cookiePath: string
     ;
 
     beforeEach(() => {
         bag = new Mock<SessionBag>();
         sessionName = Math.random().toString(36);
         sessionTtl = Math.floor(Math.random() * 1e4) + 1000;
-        listener = new SessionListener(bag.Object, sessionName, sessionTtl);
+        cookiePath = Math.random().toString(36);
+        listener = new SessionListener(bag.Object, sessionName, sessionTtl, cookiePath);
     });
 
     describe('\b.setSessionIdFromHeader', () => {
@@ -118,6 +120,7 @@ describe('SessionListener', () => {
                 asymmetricMatch(actual: string) {
                     expect(actual).toMatch(new RegExp(`\^${sessionName}=${sessionId}`));
                     expect(actual).toContain('HttpOnly');
+                    expect(actual).toContain('Path='+cookiePath);
                     expect(actual).toContain('Max-Age='+sessionTtl);
 
                     return true;
@@ -128,7 +131,7 @@ describe('SessionListener', () => {
         it('should not include Max-Age or Expires if sessionTtl <= 0', () => {
             const sessionId = Math.random().toString(36);
 
-            listener = new SessionListener(bag.Object, sessionName, 0);
+            listener = new SessionListener(bag.Object, sessionName, 0, cookiePath);
 
             bag.extend({
                 exists() { return true; },
@@ -141,6 +144,7 @@ describe('SessionListener', () => {
                 asymmetricMatch(actual: string) {
                     expect(actual).toMatch(new RegExp(`\^${sessionName}=${sessionId}`));
                     expect(actual).toContain('HttpOnly');
+                    expect(actual).toContain('Path='+cookiePath);
                     expect(actual).not.toContain('Max-Age=');
                     expect(actual).not.toContain('Expires=');
 

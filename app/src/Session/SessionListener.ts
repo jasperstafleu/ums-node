@@ -5,7 +5,7 @@ export default class SessionListener
 {
     private sessionId: string | undefined;
 
-    constructor(protected bag: SessionBag, readonly sessionName: string, protected sessionTtl: number = 30*60)
+    constructor(protected bag: SessionBag, readonly sessionName: string, protected sessionTtl: number = 30*60, protected cookiePath: string = '/')
     {
     }
 
@@ -24,7 +24,7 @@ export default class SessionListener
             return;
         }
 
-        let cookieValue = `${this.sessionName}=${this.bag.getId()}; HttpOnly`;
+        let cookieValue = `${this.sessionName}=${this.bag.getId()}; HttpOnly; Path=${this.cookiePath}`;
         if (this.sessionTtl > 0) {
             cookieValue += `; Max-Age=${this.sessionTtl}`;
         }
