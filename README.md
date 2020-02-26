@@ -13,16 +13,25 @@ Installation guide
 ------------------
 
 Run npm install
-`docker-compose run ums_node npm install`
+`docker-compose run node npm install`
 
 Build application (only fully works _after_ install)
-`docker compose up`
+`docker-compose up`
+
+Create DB somehow
+```postgresql
+create table users(
+    id   serial not null constraint users_pk primary key,
+    name varchar default 100
+);
+alter table users owner to ums;
+```
 
 Run tests:
-`docker-compose run ums_node npm run test`
+`docker-compose run node npm run test`
 
 Clean application
-`docker-compose run ums_node npm run clean`
+`docker-compose run node npm run clean`
 
 Clean application completely (including node modules)
-`docker-compose run ums_node npm run clean:all`
+`docker-compose run node npm run clean:all`
