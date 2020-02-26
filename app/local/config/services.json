@@ -11,14 +11,13 @@
         "action": "index",
         "route": "^/$",
         "defaults": {
-          "string0": "world",
           "request1": ""
         }
       },
       {
         "name": "controller",
         "action": "index",
-        "route": "^/test/(?<string0>[^/]+)$",
+        "route": "^/user/(?<number0>[^/]+)$",
         "defaults": {
           "request1": ""
         }

@@ -45,6 +45,12 @@
   "param_converter.tag_resolver": {
     "class": "$stafleu/Dependency/ParamConverterTagResolver"
   },
+  "param_converter.number": {
+    "class": "$stafleu/Controller/ParamCoverter/NumberConverter",
+    "tags": [
+      { "name": "param_converter" }
+    ]
+  },
   "param_converter.string": {
     "class": "$stafleu/Controller/ParamCoverter/StringConverter",
     "tags": [
